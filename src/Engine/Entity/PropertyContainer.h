@@ -86,7 +86,7 @@ inline Property<T> PropertyContainer::AddProperty(const CL_String& propName, con
 	{
 		Property<T>* property = dynamic_cast< Property<T>* >(it->second);
 		if(!property)
-			throw T_Exception("Property " + propName + " already exists, but with another type!");
+			throw CL_Exception("Property " + propName + " already exists, but with another type!");
 		return *property;
 	}
 
@@ -107,11 +107,11 @@ inline Property<T> PropertyContainer::GetProperty(const CL_String& propName)
 	{
 		Property<T>* property = dynamic_cast< Property<T>* >(it->second);
 		if(!property)
-			throw T_Exception("Tried to get property " + propName + ", but the type was wrong!");
+			throw CL_Exception("Tried to get property " + propName + ", but the type was wrong!");
 		return *property;
 	}
 	else
-		throw T_Exception("Unable to get property " + propName);
+		throw CL_Exception("Unable to get property " + propName);
 }
 
 inline IProperty *PropertyContainer::GetIProperty(const CL_String& propName)
