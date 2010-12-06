@@ -187,6 +187,26 @@
 				RelativePath="..\src\Engine\Entity\readme.txt"
 				>
 			</File>
+			<Filter
+				Name="Scripts"
+				>
+				<Filter
+					Name="Components"
+					>
+					<File
+						RelativePath="..\resources\Scripts\Components\SpiralEvaluator.lua"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="XML"
+				>
+				<Filter
+					Name="Entities"
+					>
+				</Filter>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>
