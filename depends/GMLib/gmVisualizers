@@ -1,0 +1,64 @@
+/**********************************************************************************
+**
+** Copyright (C) 1994 Narvik University College
+** Contact: GMlib Online Portal at http://episteme.hin.no
+**
+** This file is part of the Geometric Modeling Library, GMlib.
+**
+** GMlib is free software: you can redistribute it and/or modify
+** it under the terms of the GNU Lesser General Public License as published by
+** the Free Software Foundation, either version 3 of the License, or
+** (at your option) any later version.
+**
+** GMlib is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+** GNU Lesser General Public License for more details.
+**
+** You should have received a copy of the GNU Lesser General Public License
+** along with GMlib.  If not, see <http://www.gnu.org/licenses/>.
+**
+**********************************************************************************/
+
+
+
+/*! \file gmVisualizers
+ *
+ *  C++ interface for the GMlib Visualizer headers and the relative classes
+ *  for Displayable Curves and Surfaces.
+ *
+ *  \date   2008-09-15
+ */
+
+
+// Visualizer Base Classes
+#include "gmVisualizer"
+#include "gmPCurveVisualizer"               // PCurve Visualizer Base
+#include "gmPSurfVisualizer"                // PSurf Visualizer Base
+#include "gmPTriangleVisualizer"            // PTriangleVisualizer Base
+
+
+// Visualizers
+
+// PCurve Visualizers( non-glsl )
+#include "gmPCurveContoursVisualizer"       // PCurve Contours Visualizer
+#include "gmPCurveDerivativesVisualizer"    // PCurve Derivatives Visualizer
+#include "gmPCurvePointsVisualizer"         // PCurve Points Visualizer
+
+// PSurf Visualizers( non-glsl )
+#include "gmPSurfContoursVisualizer"        // PSurf Contours Visualizer
+#include "gmPSurfDerivativesVisualizer"     // PSurf Derivatives Visualizer
+#include "gmPSurfNormalsVisualizer"         // PSurf Normals Visualizer
+#include "gmPSurfPointsVisualizer"          // PSurf Points Visualizer
+
+// PTriangle visualizers( non-glsl )
+#include "gmPTriangleColorVisualizer"       // PTriangle Color Visualizer
+#include "gmPTriangleColorPointVisualizer"  // PTriangle Color-Point Visualizer
+
+// PCurve GLSL Visualizer
+#include "gmPCurveGLSLVisualizer"           // PCurve GLSL Visualizer
+
+// PSurf GLSL Visualizer
+#include "gmPSurfGLSLVisualizer"            // PSurf GLSL Visualizer
+
+

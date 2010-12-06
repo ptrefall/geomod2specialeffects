@@ -1,0 +1,59 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SpecialEffects", "proj\SpecialEffects.vcproj", "{EA217CA1-52B1-43E2-BDB4-859C58AE7118}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EEC0114D-B1FD-4AA3-BA76-548D99D90F17} = {EEC0114D-B1FD-4AA3-BA76-548D99D90F17}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine", "proj\Engine.vcproj", "{EEC0114D-B1FD-4AA3-BA76-548D99D90F17}"
+	ProjectSection(ProjectDependencies) = postProject
+		{92B5D093-622E-4E3A-8DEF-233D297315BF} = {92B5D093-622E-4E3A-8DEF-233D297315BF}
+		{AA75B895-9958-4D71-9419-D86946478CAA} = {AA75B895-9958-4D71-9419-D86946478CAA}
+		{F92870D0-51F6-4A40-A81A-10C36EAA39D1} = {F92870D0-51F6-4A40-A81A-10C36EAA39D1}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Depends", "Depends", "{08174956-8BD5-4123-B0C4-69BDC75EA659}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ClanLibCore", "depends\ClanLib\ClanLib.vcproj", "{92B5D093-622E-4E3A-8DEF-233D297315BF}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GMLib", "depends\GMLib\GMLib.vcproj", "{F92870D0-51F6-4A40-A81A-10C36EAA39D1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LuaPlusLib", "depends\LuaPlus\LuaPlusLib.vcproj", "{AA75B895-9958-4D71-9419-D86946478CAA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EA217CA1-52B1-43E2-BDB4-859C58AE7118}.Debug|Win32.ActiveCfg = Debug|Win32
+		{EA217CA1-52B1-43E2-BDB4-859C58AE7118}.Debug|Win32.Build.0 = Debug|Win32
+		{EA217CA1-52B1-43E2-BDB4-859C58AE7118}.Release|Win32.ActiveCfg = Release|Win32
+		{EA217CA1-52B1-43E2-BDB4-859C58AE7118}.Release|Win32.Build.0 = Release|Win32
+		{EEC0114D-B1FD-4AA3-BA76-548D99D90F17}.Debug|Win32.ActiveCfg = Debug|Win32
+		{EEC0114D-B1FD-4AA3-BA76-548D99D90F17}.Debug|Win32.Build.0 = Debug|Win32
+		{EEC0114D-B1FD-4AA3-BA76-548D99D90F17}.Release|Win32.ActiveCfg = Release|Win32
+		{EEC0114D-B1FD-4AA3-BA76-548D99D90F17}.Release|Win32.Build.0 = Release|Win32
+		{92B5D093-622E-4E3A-8DEF-233D297315BF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{92B5D093-622E-4E3A-8DEF-233D297315BF}.Debug|Win32.Build.0 = Debug|Win32
+		{92B5D093-622E-4E3A-8DEF-233D297315BF}.Release|Win32.ActiveCfg = Release|Win32
+		{92B5D093-622E-4E3A-8DEF-233D297315BF}.Release|Win32.Build.0 = Release|Win32
+		{F92870D0-51F6-4A40-A81A-10C36EAA39D1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F92870D0-51F6-4A40-A81A-10C36EAA39D1}.Debug|Win32.Build.0 = Debug|Win32
+		{F92870D0-51F6-4A40-A81A-10C36EAA39D1}.Release|Win32.ActiveCfg = Release|Win32
+		{F92870D0-51F6-4A40-A81A-10C36EAA39D1}.Release|Win32.Build.0 = Release|Win32
+		{AA75B895-9958-4D71-9419-D86946478CAA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AA75B895-9958-4D71-9419-D86946478CAA}.Debug|Win32.Build.0 = Debug|Win32
+		{AA75B895-9958-4D71-9419-D86946478CAA}.Release|Win32.ActiveCfg = Release|Win32
+		{AA75B895-9958-4D71-9419-D86946478CAA}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{92B5D093-622E-4E3A-8DEF-233D297315BF} = {08174956-8BD5-4123-B0C4-69BDC75EA659}
+		{F92870D0-51F6-4A40-A81A-10C36EAA39D1} = {08174956-8BD5-4123-B0C4-69BDC75EA659}
+		{AA75B895-9958-4D71-9419-D86946478CAA} = {08174956-8BD5-4123-B0C4-69BDC75EA659}
+	EndGlobalSection
+EndGlobal
