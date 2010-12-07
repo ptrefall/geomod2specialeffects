@@ -123,7 +123,7 @@ void ComponentContainer::ExecuteCommandOnComponents(const CL_String &command)
 		(*it)->ExecuteCommand(command);
 }
 
-void ComponentContainer::ExecuteEventOnComponents(const Events::IEvent &event)
+void ComponentContainer::ExecuteEventOnComponents(const Events::EngineEvent &event)
 {
 	std::vector<Component*>::iterator it;
 	for(it = components.begin(); it != components.end(); ++it)

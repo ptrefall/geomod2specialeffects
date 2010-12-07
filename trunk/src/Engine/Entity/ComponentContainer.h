@@ -24,7 +24,7 @@ requirements or restrictions.
 #pragma once
 
 #include <ClanLib/src/API/core.h>
-#include <Event/IEvent.h>
+#include <Event/EngineEvent.h>
 
 namespace Engine
 {
@@ -47,7 +47,7 @@ public:
 	void UpdateComponents(double deltaTime);
 
 	void ExecuteCommandOnComponents(const CL_String &command);
-	void ExecuteEventOnComponents(const Events::IEvent &event);
+	void ExecuteEventOnComponents(const Events::EngineEvent &event);
 
 protected:
 	std::vector<Component*> components;
