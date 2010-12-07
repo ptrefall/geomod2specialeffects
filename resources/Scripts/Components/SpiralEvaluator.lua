@@ -13,7 +13,7 @@ end
 
 function SpiralEvaluator:OnEvent(curve, event)
 	if(event.id = "Eval") then
-		SpiralEvaluator:OnEval(curve, event.arg[0], event.arg[1], event.arg[2])
+		SpiralEvaluator:OnEval(curve, event.arg0, event.arg1, event.arg2)
 	end
 end
 

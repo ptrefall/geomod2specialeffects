@@ -365,6 +365,18 @@
 					RelativePath="..\src\Engine\Script\ScriptMgr.h"
 					>
 				</File>
+				<Filter
+					Name="Exposure"
+					>
+					<File
+						RelativePath="..\src\Engine\Script\ExposeEngineEvent.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\Engine\Script\ExposeEngineEvent.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Resource"

@@ -28,7 +28,7 @@ requirements or restrictions.
 #include "PropertyContainer.h"
 #include "IEntity.h"
 #include <Event/CommandHandler.h>
-#include <Event/IEvent.h>
+#include <Event/EngineEvent.h>
 
 namespace Engine
 {
@@ -41,7 +41,7 @@ public:
 
     virtual void Update(double deltaTime) {};
 	virtual void ExecuteCommand(const CL_String &command) {};
-	virtual void ExecuteEvent(const Events::IEvent &event) {};
+	virtual void ExecuteEvent(const Events::EngineEvent &event) {};
 
 	template<class T>Property<T> AddProperty(const CL_String &propName, const T &defaultValue);
 	template<class T>Property<T> GetProperty(const CL_String &propName);

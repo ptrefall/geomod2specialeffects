@@ -12,6 +12,7 @@ namespace Engine
 	namespace Events { class IEngineEventManager; }
 	class GuiMgr;
 	class ResMgr;
+	class ScriptMgr;
 	class CoreMgr
 	{
 	public:
@@ -21,6 +22,7 @@ namespace Engine
 		Events::IEngineEventManager *getEngineEventMgr() const { return engineEventMgr; }
 		GuiMgr *getGuiMgr() const { return guiMgr; }
 		ResMgr *getResMgr() const { return resMgr; }
+		ScriptMgr *getScriptMgr() const { return scriptMgr; }
 
 	private:
 		CL_SetupCore *setupCore; // Initializes clanlib core lib when CoreManager is instanciated/constructed
@@ -31,6 +33,7 @@ namespace Engine
 		Events::IEngineEventManager *engineEventMgr;
 		GuiMgr *guiMgr;
 		ResMgr *resMgr;
+		ScriptMgr *scriptMgr;
 		GMlib::GMWindow *scene;
 	};
 }
