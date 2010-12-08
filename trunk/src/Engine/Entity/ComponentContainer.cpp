@@ -28,9 +28,9 @@ requirements or restrictions.
 #include "IEntity.h"
 #include "IProperty.h"
 #include <Core/CoreMgr.h>
-#include <Event/IEngineEventManager.h>
-#include <Event/EngineEvent.h>
-#include <Event/EngineEventValue.h>
+#include <Event/IEventManager.h>
+#include <Event/Event.h>
+#include <Event/EventValue.h>
 
 using namespace Engine;
 
@@ -76,7 +76,7 @@ Component* ComponentContainer::AddComponent(const CL_String& componentType, cons
 	if(component)
 	{
 		components.push_back(component);
-		coreMgr->getEngineEventMgr()->SendEvent(Events::EngineEvent("ComponentAdded", component, static_cast<IEntity*>(this)));
+		coreMgr->getEventMgr()->SendEvent(Events::Event("ComponentAdded", component, static_cast<IEntity*>(this)));
 		return component;
 	}
 	else
@@ -123,7 +123,7 @@ void ComponentContainer::ExecuteCommandOnComponents(const CL_String &command)
 		(*it)->ExecuteCommand(command);
 }
 
-void ComponentContainer::ExecuteEventOnComponents(const Events::EngineEvent &event)
+void ComponentContainer::ExecuteEventOnComponents(const Events::Event &event)
 {
 	std::vector<Component*>::iterator it;
 	for(it = components.begin(); it != components.end(); ++it)
