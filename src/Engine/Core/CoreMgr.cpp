@@ -1,8 +1,8 @@
 #include "precomp.h"
 #include "CoreMgr.h"
 
-#include <Event/IEngineEventManager.h>
-#include <Event/EngineEventManager.h>
+#include <Event/IEventManager.h>
+#include <Event/EventManager.h>
 #include <Gui/GuiMgr.h>
 #include <Resource/ResMgr.h>
 #include <Script/ScriptMgr.h>
@@ -12,7 +12,7 @@ using namespace Engine;
 
 CoreMgr::CoreMgr(const CL_String &base_path)
 : setupCore(new CL_SetupCore()),
-  engineEventMgr(NULL), guiMgr(NULL), resMgr(NULL), scriptMgr(NULL), scene(NULL)
+  EventMgr(NULL), guiMgr(NULL), resMgr(NULL), scriptMgr(NULL), scene(NULL)
 {
 	init(base_path);
 	run();
@@ -20,10 +20,10 @@ CoreMgr::CoreMgr(const CL_String &base_path)
 
 CoreMgr::~CoreMgr()
 {
-	if(engineEventMgr)
+	if(EventMgr)
 	{
-		delete engineEventMgr;
-		engineEventMgr = NULL;
+		delete EventMgr;
+		EventMgr = NULL;
 	}
 	if(guiMgr)
 	{
@@ -53,7 +53,7 @@ void CoreMgr::init(const CL_String &base_path)
 
 	resMgr = new ResMgr(base_path);
 	guiMgr = new GuiMgr(false, 640, 480, 16, 0);
-	engineEventMgr = new Events::EngineEventManager();
+	EventMgr = new Events::EventManager();
 	scriptMgr = new ScriptMgr(this);
 	scene = new GMlib::GMWindow();
 	scene->init();

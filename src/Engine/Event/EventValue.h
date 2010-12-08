@@ -10,7 +10,7 @@ class IEntity;
 namespace Events
 {
 
-class EngineEventValue
+class EventValue
 {
 public:
 	enum Type
@@ -26,19 +26,19 @@ public:
 		entity
 	};
 
-	EngineEventValue();
-	EngineEventValue(int value);
-	EngineEventValue(unsigned int value);
-	EngineEventValue(float value);
-	EngineEventValue(const CL_String &value);
-	EngineEventValue(const CL_StringRef &value);
-	EngineEventValue(const char *str);
-	EngineEventValue(const wchar_t *str);
-	EngineEventValue(Engine::Component *comp);
-	EngineEventValue(Engine::IProperty *prop);
-	EngineEventValue(Engine::IEntity *entity);
-	explicit EngineEventValue(bool value);
-	EngineEventValue(Type type);
+	EventValue();
+	EventValue(int value);
+	EventValue(unsigned int value);
+	EventValue(float value);
+	EventValue(const CL_String &value);
+	EventValue(const CL_StringRef &value);
+	EventValue(const char *str);
+	EventValue(const wchar_t *str);
+	EventValue(Engine::Component *comp);
+	EventValue(Engine::IProperty *prop);
+	EventValue(Engine::IEntity *entity);
+	explicit EventValue(bool value);
+	EventValue(Type type);
 
 	Type GetType() const;
 

@@ -24,13 +24,13 @@ requirements or restrictions.
 #include "PropertyContainer.h"
 #include "IEntity.h"
 #include <Core/CoreMgr.h>
-#include <Event/IEngineEventManager.h>
-#include <Event/EngineEvent.h>
-#include <Event/EngineEventValue.h>
+#include <Event/IEventManager.h>
+#include <Event/Event.h>
+#include <Event/EventValue.h>
 
 using namespace Engine;
 
 void PropertyContainer::PropertyAdded(IProperty *property)
 {
-	coreMgr->getEngineEventMgr()->SendEvent(Events::EngineEvent("PropertyAdded", property, static_cast<IEntity*>(this)));
+	coreMgr->getEventMgr()->SendEvent(Events::Event("PropertyAdded", property, static_cast<IEntity*>(this)));
 }

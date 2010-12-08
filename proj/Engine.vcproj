@@ -278,34 +278,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\src\Engine\Event\EngineEvent.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\Engine\Event\EngineEvent.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\Engine\Event\EngineEventContainer.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\Engine\Event\EngineEventManager.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\Engine\Event\EngineEventManager.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\Engine\Event\EngineEventValue.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\Engine\Event\EngineEventValue.h"
-					>
-				</File>
-				<File
 					RelativePath="..\src\Engine\Event\Event.cpp"
 					>
 				</File>
@@ -314,19 +286,27 @@
 					>
 				</File>
 				<File
-					RelativePath="..\src\Engine\Event\IEngineEventManager.h"
+					RelativePath="..\src\Engine\Event\EventContainer.h"
 					>
 				</File>
 				<File
-					RelativePath="..\src\Engine\Event\IEvent.h"
+					RelativePath="..\src\Engine\Event\EventManager.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\src\Engine\Event\Type.cpp"
+					RelativePath="..\src\Engine\Event\EventManager.h"
 					>
 				</File>
 				<File
-					RelativePath="..\src\Engine\Event\Type.h"
+					RelativePath="..\src\Engine\Event\EventValue.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\Engine\Event\EventValue.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\Engine\Event\IEventManager.h"
 					>
 				</File>
 			</Filter>
@@ -369,11 +349,11 @@
 					Name="Exposure"
 					>
 					<File
-						RelativePath="..\src\Engine\Script\ExposeEngineEvent.cpp"
+						RelativePath="..\src\Engine\Script\ExposeEvent.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\src\Engine\Script\ExposeEngineEvent.h"
+						RelativePath="..\src\Engine\Script\ExposeEvent.h"
 						>
 					</File>
 				</Filter>

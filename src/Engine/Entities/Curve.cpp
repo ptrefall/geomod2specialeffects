@@ -1,7 +1,7 @@
 #include "precomp.h"
 #include "Curve.h"
-#include <Event/EngineEvent.h>
-#include <Event/EngineEventValue.h>
+#include <Event/Event.h>
+#include <Event/EventValue.h>
 
 using namespace Engine;
 
@@ -26,7 +26,7 @@ Curve::~Curve()
 
 void Curve::eval(float t, int d, bool l)
 {
-	this->ExecuteEventOnComponents(Events::EngineEvent("Eval", Events::EngineEventValue(t), Events::EngineEventValue(d), Events::EngineEventValue(l)));
+	this->ExecuteEventOnComponents(Events::Event("Eval", Events::EventValue(t), Events::EventValue(d), Events::EventValue(l)));
 }
 
 void Curve::OnResultSetDimChanged(const int &oldValue, const int &newValue)

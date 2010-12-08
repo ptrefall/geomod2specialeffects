@@ -9,7 +9,7 @@ namespace GMlib
 
 namespace Engine
 {
-	namespace Events { class IEngineEventManager; }
+	namespace Events { class IEventManager; }
 	class GuiMgr;
 	class ResMgr;
 	class ScriptMgr;
@@ -19,7 +19,7 @@ namespace Engine
 		CoreMgr(const CL_String &base_path);
 		~CoreMgr();
 
-		Events::IEngineEventManager *getEngineEventMgr() const { return engineEventMgr; }
+		Events::IEventManager *getEventMgr() const { return EventMgr; }
 		GuiMgr *getGuiMgr() const { return guiMgr; }
 		ResMgr *getResMgr() const { return resMgr; }
 		ScriptMgr *getScriptMgr() const { return scriptMgr; }
@@ -30,7 +30,7 @@ namespace Engine
 		void init(const CL_String &base_path);
 		void run();
 
-		Events::IEngineEventManager *engineEventMgr;
+		Events::IEventManager *EventMgr;
 		GuiMgr *guiMgr;
 		ResMgr *resMgr;
 		ScriptMgr *scriptMgr;
