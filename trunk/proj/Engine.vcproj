@@ -222,6 +222,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\src\Engine\Entity\EntityManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\Engine\Entity\EntityManager.h"
+					>
+				</File>
+				<File
 					RelativePath="..\src\Engine\Entity\IEntity.cpp"
 					>
 				</File>
@@ -349,11 +357,79 @@
 					Name="Exposure"
 					>
 					<File
+						RelativePath="..\src\Engine\Script\ExposeComponent.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\Engine\Script\ExposeComponent.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\Engine\Script\ExposeComponentContainer.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\Engine\Script\ExposeComponentContainer.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\Engine\Script\ExposeComponentManager.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\Engine\Script\ExposeComponentManager.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\Engine\Script\ExposeEntityManager.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\Engine\Script\ExposeEntityManager.h"
+						>
+					</File>
+					<File
 						RelativePath="..\src\Engine\Script\ExposeEvent.cpp"
 						>
 					</File>
 					<File
 						RelativePath="..\src\Engine\Script\ExposeEvent.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\Engine\Script\ExposeIEntity.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\Engine\Script\ExposeIEntity.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\Engine\Script\ExposeIProperty.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\Engine\Script\ExposeIProperty.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\Engine\Script\ExposePropertyContainer.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\Engine\Script\ExposePropertyContainer.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Components"
+					>
+					<File
+						RelativePath="..\src\Engine\Script\LuaComponent.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\Engine\Script\LuaComponent.h"
 						>
 					</File>
 				</Filter>

@@ -5,29 +5,23 @@
 
 namespace Engine
 {
-namespace Core { class CoreManager; }
-namespace Entity { class IProperty; }
-namespace Script
-{
-class WrapIEntity;
-class WrapIPlayer;
-class WrapIRoom;
-class WrapPropertyContainer;
+class CoreMgr;
+class IProperty;
+class ExposeIEntity;
+class ExposePropertyContainer;
 
-class WrapIProperty
+class ExposeIProperty
 {
 public:
-	WrapIProperty(Core::CoreManager *coreMgr, Script::WrapIEntity *wEntity, WrapPropertyContainer *wPropContainer, Entity::IProperty *property);
-	WrapIProperty(Core::CoreManager *coreMgr, Script::WrapIPlayer *wPlayer, WrapPropertyContainer *wPropContainer, Entity::IProperty *property);
-	WrapIProperty(Core::CoreManager *coreMgr, Script::WrapIRoom *wRoom, WrapPropertyContainer *wPropContainer, Entity::IProperty *property);
-	~WrapIProperty();
+	ExposeIProperty(CoreMgr *coreMgr, ExposeIEntity *exposedEntity, ExposePropertyContainer *exposedPropContainer, IProperty *property);
+	~ExposeIProperty();
 
-	int init();
-
-	Entity::IProperty *getProp() const { return property; }
+	IProperty *getProp() const { return property; }
 	LuaPlus::LuaObject getLProp() const { return lProperty; }
 
 private:
+	void init();
+
 	LuaPlus::LuaObject Get(LuaPlus::LuaObject self);
 	void Set(LuaPlus::LuaObject self, LuaPlus::LuaObject value);
 	void AddListener(LuaPlus::LuaObject self, LuaPlus::LuaObject listener);
@@ -47,15 +41,13 @@ private:
 	template<class T>
 	void OnPropertyChanged(const T &oldValue, const T &newValue);
 	
-	Core::CoreManager *coreMgr;
-	Script::WrapPropertyContainer *wPropContainer;
-	Script::WrapIEntity *wEntity;
-	Script::WrapIPlayer *wPlayer;
-	Script::WrapIRoom *wRoom;
+	CoreMgr *coreMgr;
+	ExposePropertyContainer *exposedPropContainer;
+	ExposeIEntity *exposedEntity;
 
 	CL_String name;
 
-	Entity::IProperty *property;
+	IProperty *property;
 	LuaPlus::LuaObject lProperty;
 
 	std::vector<CL_String> listeners;
@@ -63,5 +55,4 @@ private:
 	CL_Slot slotPropertyChanged;
 };
 
-}
 }

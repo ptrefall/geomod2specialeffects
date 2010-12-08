@@ -17,13 +17,13 @@ public:
 	ExposeIEntity(CoreMgr *coreMgr, ExposeEntityManager *exopsedEntityMgr, IEntity *entity);
 	~ExposeIEntity();
 
-	int init();
-
-	Entity::IEntity *getEntity() const { return entity; }
+	IEntity *getEntity() const { return entity; }
 	LuaPlus::LuaObject getLEntity() const { return lEntity; }
 	LuaPlus::LuaObject getLMeta() const { return lMeta; }
 
 protected:
+	void init();
+
 	void SendCommand(LuaPlus::LuaObject lSelf, LuaPlus::LuaObject lCommand);
 	void SendEvent(LuaPlus::LuaObject lSelf, LuaPlus::LuaObject lEventType, LuaPlus::LuaObject lEventArg);
 	LuaPlus::LuaObject HasComponent(LuaPlus::LuaObject lSelf, LuaPlus::LuaObject lName);
@@ -38,5 +38,4 @@ protected:
 	ExposeComponentContainer *exposedCompContainer;
 };
 
-}
 }

@@ -7,6 +7,10 @@
 namespace Engine
 {
 	class CoreMgr;
+
+	class ExposeEntityManager;
+	class ExposeComponentManager;
+
 	class ScriptMgr
 	{
 	public:
@@ -19,6 +23,9 @@ namespace Engine
 		int doString(const CL_String &script, bool throwException = false, bool logError = true);
 		CL_String getErrorOnStack();
 
+		ExposeEntityManager *getExposedEntityMgr() const { return exposedEntityMgr; }
+		ExposeComponentManager *getExposedComponentMgr() const { return exposedComponentMgr; }
+
 	private:
 		void init();
 
@@ -28,5 +35,8 @@ namespace Engine
 		LuaPlus::LuaObject metaTable;
 
 		CoreMgr *coreMgr;
+
+		ExposeEntityManager *exposedEntityMgr;
+		ExposeComponentManager *exposedComponentMgr;
 	};
 }

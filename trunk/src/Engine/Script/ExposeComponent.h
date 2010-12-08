@@ -1,37 +1,34 @@
 #pragma once
 
 #include <LuaPlus/LuaPlus.h>
-#include <Clanlib/src/API/core.h>
 
 namespace Engine
 {
-namespace Core { class CoreManager; }
-namespace Entity { class Component; }
-namespace Script
-{
-class WrapIEntity;
-class WrapComponentContainer;
+class CoreMgr;
+class Component;
 
-class WrapComponent
+class ExposeIEntity;
+class ExposeComponentContainer;
+
+class ExposeComponent
 {
 public:
-	WrapComponent(Core::CoreManager *coreMgr, Script::WrapIEntity *wEntity, WrapComponentContainer *wCompContainer, Entity::Component *component);
-	~WrapComponent();
+	ExposeComponent(CoreMgr *coreMgr, ExposeIEntity *exposedEntity, ExposeComponentContainer *exposedCompContainer, Component *component);
+	~ExposeComponent();
 
-	int init();
-
-	Entity::Component *getComp() const { return component; }
+	Component *getComp() const { return component; }
 	LuaPlus::LuaObject getLComp() const { return lComponent; }
-	WrapIEntity *getWEntity() const { return wEntity; }
+	ExposeIEntity *getExposedEntity() const { return exposedEntity; }
 
 private:
-	Core::CoreManager *coreMgr;
-	Script::WrapComponentContainer *wCompContainer;
-	Script::WrapIEntity *wEntity;
+	void init();
 
-	Entity::Component *component;
+	CoreMgr *coreMgr;
+	ExposeComponentContainer *exposedCompContainer;
+	ExposeIEntity *exposedEntity;
+
+	Component *component;
 	LuaPlus::LuaObject lComponent;
 };
 
-}
 }

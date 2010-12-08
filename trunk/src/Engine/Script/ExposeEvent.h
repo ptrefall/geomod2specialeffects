@@ -22,6 +22,9 @@ private:
 	void exposeArg(unsigned int i, const bool &arg, LuaPlus::LuaObject &lEvent);
 	void exposeArg(unsigned int i, const int &arg, LuaPlus::LuaObject &lEvent);
 	void exposeArg(unsigned int i, const float &arg, LuaPlus::LuaObject &lEvent);
+	void exposeArg(unsigned int i, const CL_Vec2f &arg, LuaPlus::LuaObject &lEvent);
+	void exposeArg(unsigned int i, const CL_Vec3f &arg, LuaPlus::LuaObject &lEvent);
+	void exposeArg(unsigned int i, const CL_Vec4f &arg, LuaPlus::LuaObject &lEvent);
 	void exposeArg(unsigned int i, const CL_String &arg, LuaPlus::LuaObject &lEvent);
 	void exposeArg(unsigned int i, const Component &arg, LuaPlus::LuaObject &lEvent);
 	void exposeArg(unsigned int i, const IProperty &arg, LuaPlus::LuaObject &lEvent);

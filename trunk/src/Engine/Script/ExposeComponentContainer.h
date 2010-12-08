@@ -2,39 +2,37 @@
 
 #include <LuaPlus/LuaPlus.h>
 #include <vector>
-#include <EventSystem/src/EngineEventContainer.h>
-#include <EventSystem/src/EngineEvent.h>
+#include <Event/EventContainer.h>
+#include <Event/Event.h>
 
 namespace Engine
 {
-namespace Core { class CoreManager; }
-namespace Script
-{
-class WrapIEntity;
-class WrapComponent;
+class CoreMgr;
 
-class WrapComponentContainer
+class ExposeIEntity;
+class ExposeComponent;
+
+class ExposeComponentContainer
 {
 public:
-	WrapComponentContainer(Core::CoreManager *coreMgr, Script::WrapIEntity *wEntity);
-	~WrapComponentContainer();
-
-	int init();
+	ExposeComponentContainer(CoreMgr *coreMgr, ExposeIEntity *exposedEntity);
+	~ExposeComponentContainer();
 
 	LuaPlus::LuaObject &getLComps() { return lComponents; }
 
 private:
+	void init();
+
 	void AddComponent(LuaPlus::LuaObject self, LuaPlus::LuaObject lName);
 
-	Core::CoreManager *coreMgr;
-	Script::WrapIEntity *wEntity;
+	CoreMgr *coreMgr;
+	ExposeIEntity *exposedEntity;
 
 	LuaPlus::LuaObject lComponents;
-	std::vector<WrapComponent*> wComponents;
+	std::vector<ExposeComponent*> exposedComponents;
 
-	void OnComponentAdded(const Engine::Events::EngineEvent &event);
-	Engine::Events::EngineEventContainer engineEvents;
+	void OnComponentAdded(const Events::Event &event);
+	Events::EventContainer engineEvents;
 };
 
-}
 }

@@ -56,6 +56,18 @@ void ExposeEvent::exposeArg(unsigned int i, const Events::EventValue &arg, LuaPl
 	{
 		exposeArg(i, arg.ToNumber(), lEvent);
 	}
+	else if(arg.IsVec2())
+	{
+		exposeArg(i, arg.ToVec2(), lEvent);
+	}
+	else if(arg.IsVec3())
+	{
+		exposeArg(i, arg.ToVec3(), lEvent);
+	}
+	else if(arg.IsVec4())
+	{
+		exposeArg(i, arg.ToVec4(), lEvent);
+	}
 	else if(arg.IsString())
 	{
 		exposeArg(i, arg.ToString(), lEvent);
@@ -87,6 +99,33 @@ void ExposeEvent::exposeArg(unsigned int i, const int &arg, LuaPlus::LuaObject &
 void ExposeEvent::exposeArg(unsigned int i, const float &arg, LuaPlus::LuaObject &lEvent)
 {
 	lEvent.SetNumber(cl_format("arg%1", i).c_str(), arg);
+}
+
+void ExposeEvent::exposeArg(unsigned int i, const CL_Vec2f &arg, LuaPlus::LuaObject &lEvent)
+{
+	LuaObject lVec;
+	lVec.SetNumber("x", arg.x);
+	lVec.SetNumber("y", arg.y);
+	lEvent.SetObject(cl_format("arg%1", i).c_str(), lVec);
+}
+
+void ExposeEvent::exposeArg(unsigned int i, const CL_Vec3f &arg, LuaPlus::LuaObject &lEvent)
+{
+	LuaObject lVec;
+	lVec.SetNumber("x", arg.x);
+	lVec.SetNumber("y", arg.y);
+	lVec.SetNumber("z", arg.z);
+	lEvent.SetObject(cl_format("arg%1", i).c_str(), lVec);
+}
+
+void ExposeEvent::exposeArg(unsigned int i, const CL_Vec4f &arg, LuaPlus::LuaObject &lEvent)
+{
+	LuaObject lVec;
+	lVec.SetNumber("x", arg.x);
+	lVec.SetNumber("y", arg.y);
+	lVec.SetNumber("z", arg.z);
+	lVec.SetNumber("w", arg.w);
+	lEvent.SetObject(cl_format("arg%1", i).c_str(), lVec);
 }
 
 void ExposeEvent::exposeArg(unsigned int i, const CL_String &arg, LuaPlus::LuaObject &lEvent)

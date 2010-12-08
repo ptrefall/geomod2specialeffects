@@ -21,6 +21,9 @@ public:
 		string,
 		boolean,
 		number,
+		vec2,
+		vec3,
+		vec4,
 		component,
 		property,
 		entity
@@ -30,6 +33,9 @@ public:
 	EventValue(int value);
 	EventValue(unsigned int value);
 	EventValue(float value);
+	EventValue(const CL_Vec2f &value);
+	EventValue(const CL_Vec3f &value);
+	EventValue(const CL_Vec4f &value);
 	EventValue(const CL_String &value);
 	EventValue(const CL_StringRef &value);
 	EventValue(const char *str);
@@ -48,6 +54,9 @@ public:
 	bool IsNumber() const;
 	bool IsString() const;
 	bool IsBoolean() const;
+	bool IsVec2() const;
+	bool IsVec3() const;
+	bool IsVec4() const;
 	bool IsComponent() const;
 	bool IsProperty() const;
 	bool IsEntity() const;
@@ -58,6 +67,9 @@ public:
 	float ToNumber() const;
 	CL_String ToString() const;
 	bool ToBoolean() const;
+	CL_Vec2f ToVec2() const;
+	CL_Vec3f ToVec3() const;
+	CL_Vec4f ToVec4() const;
 	Engine::Component *ToComponent() const;
 	Engine::IProperty *ToProperty() const;
 	Engine::IEntity *ToEntity() const;
@@ -78,6 +90,9 @@ private:
 		bool valueBool;
 	};
 	CL_String valueString;
+	CL_Vec2f valueVec2;
+	CL_Vec3f valueVec3;
+	CL_Vec4f valueVec4;
 	Engine::Component *valueComp;
 	Engine::IProperty *valueProp;
 	Engine::IEntity *valueEntity;
