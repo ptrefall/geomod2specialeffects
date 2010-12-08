@@ -1,5 +1,7 @@
 #include "precomp.h"
 #include "ScriptMgr.h"
+#include "ExposeEntityManager.h"
+#include "ExposeComponentManager.h"
 #include <Core/CoreMgr.h>
 #include <Resource/ResMgr.h>
 
@@ -7,6 +9,7 @@ using namespace Engine;
 using namespace LuaPlus;
 
 ScriptMgr::ScriptMgr(CoreMgr *coreMgr)
+: exposedEntityMgr(NULL), exposedComponentMgr(NULL)
 {
 	this->coreMgr = coreMgr;
 	init();
@@ -14,6 +17,17 @@ ScriptMgr::ScriptMgr(CoreMgr *coreMgr)
 
 ScriptMgr::~ScriptMgr()
 {
+	if(exposedEntityMgr)
+	{
+		delete exposedEntityMgr;
+		exposedEntityMgr = NULL;
+	}
+
+	if(exposedComponentMgr)
+	{
+		delete exposedComponentMgr;
+		exposedComponentMgr = NULL;
+	}
 }
 
 void ScriptMgr::init()
@@ -30,6 +44,9 @@ void ScriptMgr::init()
 	globalState->GetGlobals().SetObject("ScriptManager", scriptManObj);
 
 	globals.RegisterDirect("Print", *this, &ScriptMgr::Print);
+
+	exposedEntityMgr = new ExposeEntityManager(coreMgr);
+	exposedComponentMgr = new ExposeComponentManager(coreMgr);
 }
 
 int ScriptMgr::doFile(const CL_String &fileName)

@@ -24,6 +24,21 @@ EventValue::EventValue(float value)
 {
 }
 
+EventValue::EventValue(const CL_Vec2f &value)
+: type(vec2), valueVec2(value)
+{
+}
+
+EventValue::EventValue(const CL_Vec3f &value)
+: type(vec3), valueVec3(value)
+{
+}
+
+EventValue::EventValue(const CL_Vec4f &value)
+: type(vec4), valueVec4(value)
+{
+}
+
 EventValue::EventValue(const CL_String &value)
 : type(string), valueString(value)
 {
@@ -94,6 +109,21 @@ bool EventValue::IsNumber() const
 	return type == number;
 }
 
+bool EventValue::IsVec2() const
+{
+	return type == vec2;
+}
+
+bool EventValue::IsVec3() const
+{
+	return type == vec3;
+}
+
+bool EventValue::IsVec4() const
+{
+	return type == vec4;
+}
+
 bool EventValue::IsString() const
 {
 	return type == string;
@@ -141,6 +171,30 @@ float EventValue::ToNumber() const
 		return valueFloat;
 	else
 		throw CL_Exception("EventValue is not a floating point number");
+}
+
+CL_Vec2f EventValue::ToVec2() const
+{
+	if (IsVec2())
+		return valueVec2;
+	else
+		throw CL_Exception("EventValue is not a Vec2");
+}
+
+CL_Vec3f EventValue::ToVec3() const
+{
+	if (IsVec3())
+		return valueVec3;
+	else
+		throw CL_Exception("EventValue is not a Vec3");
+}
+
+CL_Vec4f EventValue::ToVec4() const
+{
+	if (IsVec4())
+		return valueVec4;
+	else
+		throw CL_Exception("EventValue is not a Vec4");
 }
 
 CL_String EventValue::ToString() const

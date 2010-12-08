@@ -1,37 +1,34 @@
 #pragma once
 
-#include <Component.h>
-#include <EventSystem/src/IEvent.h>
-#include <IEntity.h>
+#include <Entity/Component.h>
+#include <Event/Event.h>
+#include <Entity/IEntity.h>
 
 namespace Engine
 {
-namespace Core { class CoreManager; }
-namespace Player { class IPlayer; }
-namespace Script { class WrapComponent; }
+class CoreMgr;
+class ExposeComponent;
 
-namespace Component
+class LuaComponent : public Component
 {
-	class LuaComponent : public Engine::Entity::Component
-	{
-	public:
-		virtual ~LuaComponent() {}
+public:
+	virtual ~LuaComponent() {}
 
-		virtual void Update(double dt);
-		virtual void ExecuteCommand(const CL_String &command, Engine::Player::IPlayer *player);
-		virtual void ExecuteEvent(const Engine::Events::IEvent &event, Engine::Player::IPlayer *player);
+	virtual void Update(double dt);
+	virtual void ExecuteCommand(const CL_String &command);
+	virtual void ExecuteEvent(const Events::Event &event);
 
-		static CL_String GetType() { return "Lua"; }
-		static Engine::Entity::Component* Create(Engine::Core::CoreManager *coreMgr, Engine::Entity::IEntity *entity, const T_String &name) { return new LuaComponent(coreMgr, entity, name); }
+	static CL_String GetType() { return "Lua"; }
+	static Component* Create(CoreMgr *coreMgr, IEntity *entity, const CL_String &name) { return new LuaComponent(coreMgr, entity, name); }
 
-		void initLuaExposure(Script::WrapComponent *wComp);
+	void initLuaExposure(ExposeComponent *exposedComp);
 
-	protected:
-		LuaComponent(Engine::Core::CoreManager *coreMgr, Engine::Entity::IEntity *entity, const T_String &name);
+protected:
+	LuaComponent(CoreMgr *coreMgr, IEntity *entity, const CL_String &name);
 
-		Engine::Core::CoreManager *coreMgr;
-		Script::WrapComponent *wComp;
+	CoreMgr *coreMgr;
+	ExposeComponent *exposedComp;
 
-		bool hasInit, hasUpdate, hasCommand, hasEvent;
-	};
-}}
+	bool hasInit, hasUpdate, hasCommand, hasEvent;
+};
+}

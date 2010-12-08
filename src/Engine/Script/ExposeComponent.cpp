@@ -1,40 +1,39 @@
-#include "WrapComponent.h"
-#include "WrapIEntity.h"
-#include "WrapComponentContainer.h"
+#include "precomp.h"
+#include "ExposeComponent.h"
+#include "ExposeIEntity.h"
+#include "ExposeComponentContainer.h"
 #include "LuaComponent.h"
-#include "ScriptManager.h"
-#include <Core/Core.h>
-#include <Component.h>
-#include <IEntity.h>
-#include <EventSystem/src/Event.h>
+#include "ScriptMgr.h"
+#include <Core/CoreMgr.h>
+#include <Entity/Component.h>
+#include <Entity/IEntity.h>
+#include <Event/Event.h>
 
 using namespace Engine;
-using namespace Script;
 using namespace LuaPlus;
-using namespace Entity;
 
-WrapComponent::WrapComponent(Core::CoreManager *coreMgr, Script::WrapIEntity *wEntity, WrapComponentContainer *wCompContainer, Entity::Component *component)
+ExposeComponent::ExposeComponent(CoreMgr *coreMgr, ExposeIEntity *exposedEntity, ExposeComponentContainer *exposedCompContainer, Component *component)
 {
 	this->coreMgr = coreMgr;
-	this->wEntity = wEntity;
-	this->wCompContainer = wCompContainer;
+	this->exposedEntity = exposedEntity;
+	this->exposedCompContainer = exposedCompContainer;
 	this->component = component;
 }
 
-WrapComponent::~WrapComponent()
+ExposeComponent::~ExposeComponent()
 {
 	lComponent.AssignNil(coreMgr->getScriptMgr()->GetGlobalState()->Get());
 }
 
-int WrapComponent::init()
+void ExposeComponent::init()
 {
 	LuaObject globals = (*coreMgr->getScriptMgr()->GetGlobalState())->GetGlobals();
 	
 	//Check if this is a C++ component, or a scripted Lua defined component
-	Component::LuaComponent *luaComp = dynamic_cast<Component::LuaComponent*>(component);
+	LuaComponent *luaComp = dynamic_cast<LuaComponent*>(component);
 	if(luaComp == NULL)
 	{
-		LuaObject &lComps = wCompContainer->getLComps();
+		LuaObject &lComps = exposedCompContainer->getLComps();
 		lComponent = lComps.CreateTable(component->GetName().c_str());
 		lComponent.SetString("id", component->GetName().c_str());
 		
@@ -60,5 +59,4 @@ int WrapComponent::init()
 
 		luaComp->initLuaExposure(this);
 	}
-	return 0;
 }

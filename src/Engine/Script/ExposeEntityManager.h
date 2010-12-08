@@ -1,41 +1,37 @@
 #pragma once
 
 #include <LuaPlus/LuaPlus.h>
-#include <vector>
-#include <EventSystem/src/EngineEventContainer.h>
-#include <EventSystem/src/EngineEvent.h>
+#include <Event/EventContainer.h>
+#include <Event/Event.h>
 
 namespace Engine
 {
-namespace Core { class CoreManager; }
-namespace Script
-{
-class WrapIEntity;
+class CoreMgr;
+class ExposeIEntity;
 
-class WrapEntityManager
+class ExposeEntityManager
 {
 public:
-	WrapEntityManager(Core::CoreManager *coreMgr);
-	~WrapEntityManager();
-
-	int init();
+	ExposeEntityManager(CoreMgr *coreMgr);
+	~ExposeEntityManager();
 
 	LuaPlus::LuaObject &getLEntities() { return lEntities; }
 	LuaPlus::LuaObject getLEntity(unsigned int id);
-	WrapIEntity *getWEntity(unsigned int id);
+	ExposeIEntity *getExposedEntity(unsigned int id);
 
 private:
+	void init();
+
 	LuaPlus::LuaObject CreateEntity(LuaPlus::LuaObject lType, LuaPlus::LuaObject lName);
 
-	Core::CoreManager *coreMgr;
+	CoreMgr *coreMgr;
 
 	LuaPlus::LuaObject lEntities;
-	std::vector<WrapIEntity*> wEntities;
+	std::vector<ExposeIEntity*> exposedEntities;
 
-	void OnEntityCreated(const Engine::Events::EngineEvent &event);
-	void OnEntityRemoved(const Engine::Events::EngineEvent &event);
-	Engine::Events::EngineEventContainer engineEvents;
+	void OnEntityCreated(const Events::Event &event);
+	void OnEntityRemoved(const Events::Event &event);
+	Events::EventContainer engineEvents;
 };
 
-}
 }

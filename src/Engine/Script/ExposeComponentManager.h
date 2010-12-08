@@ -1,27 +1,23 @@
 #pragma once
 
 #include <LuaPlus/LuaPlus.h>
-#include <vector>
 
 namespace Engine
 {
-namespace Core { class CoreManager; }
-namespace Script
-{
+class CoreMgr;
 
-class WrapComponentManager
+class ExposeComponentManager
 {
 public:
-	WrapComponentManager(Core::CoreManager *coreMgr);
-	~WrapComponentManager();
-
-	int init();
+	ExposeComponentManager(CoreMgr *coreMgr);
+	~ExposeComponentManager();
 
 private:
+	void init();
+
 	void RegisterComponent(LuaPlus::LuaObject lName);
 
-	Core::CoreManager *coreMgr;
+	CoreMgr *coreMgr;
 };
 
-}
 }

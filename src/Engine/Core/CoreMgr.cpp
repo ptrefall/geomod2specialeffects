@@ -6,13 +6,14 @@
 #include <Gui/GuiMgr.h>
 #include <Resource/ResMgr.h>
 #include <Script/ScriptMgr.h>
+#include <Entity/EntityManager.h>
 #include <GMLib/gmWindow.h>
 
 using namespace Engine;
 
 CoreMgr::CoreMgr(const CL_String &base_path)
 : setupCore(new CL_SetupCore()),
-  EventMgr(NULL), guiMgr(NULL), resMgr(NULL), scriptMgr(NULL), scene(NULL)
+  eventMgr(NULL), guiMgr(NULL), resMgr(NULL), scriptMgr(NULL), entityMgr(NULL), scene(NULL)
 {
 	init(base_path);
 	run();
@@ -20,10 +21,10 @@ CoreMgr::CoreMgr(const CL_String &base_path)
 
 CoreMgr::~CoreMgr()
 {
-	if(EventMgr)
+	if(eventMgr)
 	{
-		delete EventMgr;
-		EventMgr = NULL;
+		delete eventMgr;
+		eventMgr = NULL;
 	}
 	if(guiMgr)
 	{
@@ -40,6 +41,11 @@ CoreMgr::~CoreMgr()
 		delete scriptMgr;
 		scriptMgr = NULL;
 	}
+	if(entityMgr)
+	{
+		delete entityMgr;
+		entityMgr = NULL;
+	}
 	if(scene)
 	{
 		delete scene;
@@ -53,7 +59,8 @@ void CoreMgr::init(const CL_String &base_path)
 
 	resMgr = new ResMgr(base_path);
 	guiMgr = new GuiMgr(false, 640, 480, 16, 0);
-	EventMgr = new Events::EventManager();
+	eventMgr = new Events::EventManager();
+	entityMgr = new EntityManager(this);
 	scriptMgr = new ScriptMgr(this);
 	scene = new GMlib::GMWindow();
 	scene->init();
