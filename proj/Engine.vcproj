@@ -397,6 +397,14 @@
 						>
 					</File>
 					<File
+						RelativePath="..\src\Engine\Script\ExposeCurve.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\Engine\Script\ExposeCurve.h"
+						>
+					</File>
+					<File
 						RelativePath="..\src\Engine\Script\ExposeEntityManager.cpp"
 						>
 					</File>
@@ -434,6 +442,14 @@
 					</File>
 					<File
 						RelativePath="..\src\Engine\Script\ExposePropertyContainer.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\Engine\Script\ExposeSceneMgr.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\Engine\Script\ExposeSceneMgr.h"
 						>
 					</File>
 				</Filter>

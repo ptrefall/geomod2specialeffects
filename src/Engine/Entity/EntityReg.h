@@ -15,7 +15,7 @@ namespace Engine
 		static void Register(EntityFactory *factory, CoreMgr *coreMgr)
 		{
 			//Register special C++ entity types
-			factory->RegisterSpecial(Curve::GetSpecialType(), &Curve::Create);
+			factory->RegisterSpecial(Curve::GetStaticSpecialType(), &Curve::Create);
 
 			//Register XML defined entities
 			std::vector<CL_String> entities = coreMgr->getResMgr()->getFilesInDir("/XML/Entities/");

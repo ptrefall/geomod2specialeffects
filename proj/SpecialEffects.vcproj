@@ -194,6 +194,10 @@
 					Name="Components"
 					>
 					<File
+						RelativePath="..\resources\Scripts\Components\ButterflyEvaluator.lua"
+						>
+					</File>
+					<File
 						RelativePath="..\resources\Scripts\Components\SpiralEvaluator.lua"
 						>
 					</File>
@@ -217,6 +221,10 @@
 				<Filter
 					Name="Entities"
 					>
+					<File
+						RelativePath="..\resources\XML\Entities\ButterflyCurve.xml"
+						>
+					</File>
 					<File
 						RelativePath="..\resources\XML\Entities\Empty.xml"
 						>

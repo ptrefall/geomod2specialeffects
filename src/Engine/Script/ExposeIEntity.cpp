@@ -3,9 +3,11 @@
 #include "ExposeEntityManager.h"
 #include "ExposePropertyContainer.h"
 #include "ExposeComponentContainer.h"
+#include "ExposeCurve.h"
 #include "ScriptMgr.h"
 #include <Core/CoreMgr.h>
 #include <Entity/IEntity.h>
+#include <Entities/Curve.h>
 #include <Event/Event.h>
 #include <Event/EventValue.h>
 
@@ -13,7 +15,7 @@ using namespace Engine;
 using namespace LuaPlus;
 
 ExposeIEntity::ExposeIEntity(CoreMgr *coreMgr, ExposeEntityManager *exposedEntityMgr, IEntity *entity)
-: exposedPropContainer(NULL), exposedCompContainer(NULL)
+: exposedPropContainer(NULL), exposedCompContainer(NULL), exposedCurve(NULL)
 {
 	this->coreMgr = coreMgr;
 	this->exposedEntityMgr = exposedEntityMgr;
@@ -32,6 +34,11 @@ ExposeIEntity::~ExposeIEntity()
 	{
 		delete exposedCompContainer;
 		exposedCompContainer = NULL;
+	}
+	if(exposedCurve)
+	{
+		delete exposedCurve;
+		exposedCurve = NULL;
 	}
 
 	lEntity.AssignNil(coreMgr->getScriptMgr()->GetGlobalState()->Get());
@@ -62,6 +69,11 @@ void ExposeIEntity::init()
 
 	exposedPropContainer = new ExposePropertyContainer(coreMgr, this);
 	exposedCompContainer = new ExposeComponentContainer(coreMgr, this);
+
+	if(entity->getSpecialType() == Curve::GetStaticSpecialType())
+	{
+		exposedCurve = new ExposeCurve(coreMgr, lEntity, lMeta, dynamic_cast<Curve*>(entity));
+	}
 }
 
 void ExposeIEntity::SendCommand(LuaObject lSelf, LuaObject lCommand)

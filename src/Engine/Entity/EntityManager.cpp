@@ -57,5 +57,7 @@ IEntity *EntityManager::create(const CL_String &type, const CL_String &name)
 	coreMgr->getEventMgr()->SendEvent(Events::Event("EntityCreated", Events::EventValue(entity)));
 
 	factory->addDataAndLogic(entity, type);
+
+	entities.push_back(entity);
 	return entity;
 }
