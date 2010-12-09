@@ -486,6 +486,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Scene"
+				>
+				<File
+					RelativePath="..\src\Engine\Scene\Scene.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\Engine\Scene\Scene.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>
