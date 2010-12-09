@@ -16,6 +16,7 @@ using namespace LuaPlus;
 ExposeComponentManager::ExposeComponentManager(CoreMgr *coreMgr)
 {
 	this->coreMgr = coreMgr;
+	init();
 }
 
 ExposeComponentManager::~ExposeComponentManager()

@@ -38,3 +38,5 @@ function SpiralEvaluator:OnEval(curve, t, d, l)
 		end
 	end
 end
+
+RegisterComponent("SpiralEvaluator")

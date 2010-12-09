@@ -18,6 +18,7 @@ ExposeIEntity::ExposeIEntity(CoreMgr *coreMgr, ExposeEntityManager *exposedEntit
 	this->coreMgr = coreMgr;
 	this->exposedEntityMgr = exposedEntityMgr;
 	this->entity = entity;
+	init();
 }
 
 ExposeIEntity::~ExposeIEntity()

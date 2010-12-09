@@ -22,6 +22,7 @@ ExposeIProperty::ExposeIProperty(CoreMgr *coreMgr, ExposeIEntity *exposedEntity,
 	this->exposedPropContainer = exposedPropContainer;
 	this->property = property;
 	name = property->GetName();
+	init();
 }
 
 ExposeIProperty::~ExposeIProperty()

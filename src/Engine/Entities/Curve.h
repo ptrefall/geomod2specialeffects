@@ -12,6 +12,9 @@ namespace Engine
 		Curve(unsigned int id, const CL_String &type, const CL_String &name, CoreMgr *coreMgr, ComponentFactory &factory);
 		virtual ~Curve();
 
+		static CL_String GetSpecialType() { return "Curve"; }
+		static IEntity* Create(unsigned int id, const CL_String &type, const CL_String &name, CoreMgr *coreMgr, ComponentFactory &factory) { return new Curve(id, type, name, coreMgr, factory); }
+
 		virtual void eval(float t, int d, bool l=true);
 		virtual float getStartP() { return param_start.Get(); }
 		virtual float getEndP() { return param_end.Get(); }

@@ -12,6 +12,7 @@ ExposeEvent::ExposeEvent(CoreMgr *coreMgr, const Events::Event *event)
 : event(event)
 {
 	this->coreMgr = coreMgr;
+	init();
 }
 
 ExposeEvent::~ExposeEvent()
