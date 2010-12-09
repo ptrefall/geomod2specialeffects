@@ -15,6 +15,7 @@ ExposeEntityManager::ExposeEntityManager(CoreMgr *coreMgr)
 : engineEvents(coreMgr->getEventMgr())
 {
 	this->coreMgr = coreMgr;
+	init();
 }
 
 ExposeEntityManager::~ExposeEntityManager()

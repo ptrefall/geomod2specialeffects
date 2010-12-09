@@ -57,7 +57,7 @@ void CoreMgr::init(const CL_String &base_path)
 {
 	int fail = 0;
 
-	resMgr = new ResMgr(base_path);
+	resMgr = new ResMgr(this, base_path);
 	guiMgr = new GuiMgr(false, 640, 480, 16, 0);
 	eventMgr = new Events::EventManager();
 	entityMgr = new EntityManager(this);

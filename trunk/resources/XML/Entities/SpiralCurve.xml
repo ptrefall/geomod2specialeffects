@@ -1,0 +1,17 @@
+<Entity>
+  <Type>SpiralCurve</Type>
+  <Special>Curve</Special>
+	<Components>
+    <Component>SpiralEvaluator</Component>
+	</Components>
+	<Properties>
+    <Property>
+      <Name>ResultSetDim</Name>
+      <Value>1</Value>
+    </Property>
+    <Property>
+      <Name>DerivationMethod</Name>
+      <Value>0</Value>
+    </Property>
+	</Properties>
+</Entity>

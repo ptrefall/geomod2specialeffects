@@ -18,6 +18,7 @@ ExposePropertyContainer::ExposePropertyContainer(CoreMgr *coreMgr, ExposeIEntity
 {
 	this->coreMgr = coreMgr;
 	this->exposedEntity = exposedEntity;
+	init();
 }
 
 ExposePropertyContainer::~ExposePropertyContainer()

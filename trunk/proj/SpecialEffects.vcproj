@@ -205,6 +205,14 @@
 				<Filter
 					Name="Entities"
 					>
+					<File
+						RelativePath="..\resources\XML\Entities\Empty.xml"
+						>
+					</File>
+					<File
+						RelativePath="..\resources\XML\Entities\SpiralCurve.xml"
+						>
+					</File>
 				</Filter>
 			</Filter>
 		</Filter>

@@ -222,11 +222,27 @@
 					>
 				</File>
 				<File
+					RelativePath="..\src\Engine\Entity\ComponentReg.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\Engine\Entity\EntityFactory.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\Engine\Entity\EntityFactory.h"
+					>
+				</File>
+				<File
 					RelativePath="..\src\Engine\Entity\EntityManager.cpp"
 					>
 				</File>
 				<File
 					RelativePath="..\src\Engine\Entity\EntityManager.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\Engine\Entity\EntityReg.h"
 					>
 				</File>
 				<File
@@ -438,11 +454,35 @@
 				Name="Resource"
 				>
 				<File
+					RelativePath="..\src\Engine\Resource\IResource.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\Engine\Resource\ResFactory.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\Engine\Resource\ResFactory.h"
+					>
+				</File>
+				<File
 					RelativePath="..\src\Engine\Resource\ResMgr.cpp"
 					>
 				</File>
 				<File
 					RelativePath="..\src\Engine\Resource\ResMgr.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\Engine\Resource\ResReg.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\Engine\Resource\XMLResource.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\Engine\Resource\XMLResource.h"
 					>
 				</File>
 			</Filter>

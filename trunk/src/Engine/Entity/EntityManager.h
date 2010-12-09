@@ -4,19 +4,30 @@ namespace Engine
 {
 class CoreMgr;
 class IEntity;
+class EntityFactory;
 class ComponentFactory;
 class EntityManager
 {
 public:
-	EntityManager(CoreMgr *coreMgr) : coreMgr(coreMgr) {}
-	~EntityManager() {}
+	EntityManager(CoreMgr *coreMgr);
+	~EntityManager();
 
-	ComponentFactory *getComponentFactory() const { return NULL; }
-	IEntity *create(const CL_String &type, const CL_String &name = CL_String()) { return NULL; }
+	ComponentFactory *getComponentFactory() const { return compFactory; }
+	IEntity *create(const CL_String &type, const CL_String &name = CL_String());
+
+	unsigned int genUId()
+	{
+		uIds++;
+		return uIds;
+	}
 
 private:
+	void init();
+
 	CoreMgr *coreMgr;
+	EntityFactory *factory;
 	ComponentFactory *compFactory;
+	unsigned int uIds;
 };
 
 }
