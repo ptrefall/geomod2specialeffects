@@ -7,7 +7,9 @@
 #include <Resource/ResMgr.h>
 #include <Script/ScriptMgr.h>
 #include <Entity/EntityManager.h>
+#include <Entity/IEntity.h>
 #include <GMLib/gmWindow.h>
+#include <GMLib/gmDisplayObject.h>
 
 #include <Scene/Scene.h>
 #include <Resource/IResource.h>
@@ -54,6 +56,13 @@ CoreMgr::~CoreMgr()
 		delete scene;
 		scene = NULL;
 	}
+}
+
+void CoreMgr::addToScene(IEntity *entity)
+{
+	GMlib::DisplayObject *obj = dynamic_cast<GMlib::DisplayObject *>(entity);
+	if(obj)
+		scene->insert(obj);
 }
 
 void CoreMgr::init(const CL_String &base_path)

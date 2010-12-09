@@ -11,6 +11,8 @@ class ExposeEntityManager;
 class ExposePropertyContainer;
 class ExposeComponentContainer;
 
+class ExposeCurve;
+
 class ExposeIEntity
 {
 public:
@@ -36,6 +38,8 @@ protected:
 	LuaPlus::LuaObject lMeta;
 	ExposePropertyContainer *exposedPropContainer;
 	ExposeComponentContainer *exposedCompContainer;
+
+	ExposeCurve *exposedCurve;
 };
 
 }

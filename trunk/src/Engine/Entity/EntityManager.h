@@ -28,6 +28,8 @@ private:
 	EntityFactory *factory;
 	ComponentFactory *compFactory;
 	unsigned int uIds;
+
+	std::vector<IEntity*> entities;
 };
 
 }

@@ -1,21 +1,21 @@
 <Entity>
-  <Type>SpiralCurve</Type>
+  <Type>ButterflyCurve</Type>
   <Special>Curve</Special>
 	<Components>
-    <Component>SpiralEvaluator</Component>
+    <Component>ButterflyEvaluator</Component>
 	</Components>
 	<Properties>
     <Property>
       <Name>ResultSetDim</Name>
-      <Value>0</Value>
+      <Value>2</Value>
     </Property>
     <Property>
       <Name>DerivationMethod</Name>
-      <Value>1</Value>
+      <Value>0</Value>
     </Property>
     <Property>
       <Name>ParamEnd</Name>
-      <Value>6.28318</Value>
+      <Value>75.3982236</Value>
     </Property>
 	</Properties>
 </Entity>

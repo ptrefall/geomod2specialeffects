@@ -48,6 +48,7 @@ public:
 	unsigned int getId() const { return id; }
 	const CL_String &getType() const { return type; }
 	const CL_String &getName() const { return name; }
+	virtual CL_String getSpecialType() const { return CL_String(); }
 
 protected:
 	unsigned int id;

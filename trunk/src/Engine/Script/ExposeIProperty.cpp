@@ -213,7 +213,14 @@ void ExposeIProperty::Set(LuaObject self, LuaObject value)
 		LuaObject xObj = value.GetByName("x");
 		LuaObject yObj = value.GetByName("y");
 		if(!xObj.IsNumber() || !yObj.IsNumber())
-			return;
+		{
+			xObj = value.GetByIndex(0);
+			yObj = value.GetByIndex(1);
+			if(!xObj.IsNumber() || !yObj.IsNumber())
+			{	
+				return;
+			}
+		}
 
 		CL_Vec2f val((float)xObj.ToNumber(), (float)yObj.ToNumber());
 		prop->Set(val);
@@ -228,7 +235,15 @@ void ExposeIProperty::Set(LuaObject self, LuaObject value)
 		LuaObject yObj = value.GetByName("y");
 		LuaObject zObj = value.GetByName("z");
 		if(!xObj.IsNumber() || !yObj.IsNumber() || !zObj.IsNumber())
-			return;
+		{
+			xObj = value.GetByIndex(0);
+			yObj = value.GetByIndex(1);
+			zObj = value.GetByIndex(2);
+			if(!xObj.IsNumber() || !yObj.IsNumber() || !zObj.IsNumber())
+			{	
+				return;
+			}
+		}
 
 		CL_Vec3f val((float)xObj.ToNumber(), (float)yObj.ToNumber(), (float)zObj.ToNumber());
 		prop->Set(val);
@@ -244,7 +259,16 @@ void ExposeIProperty::Set(LuaObject self, LuaObject value)
 		LuaObject zObj = value.GetByName("z");
 		LuaObject wObj = value.GetByName("w");
 		if(!xObj.IsNumber() || !yObj.IsNumber() || !zObj.IsNumber() || !wObj.IsNumber())
-			return;
+		{
+			xObj = value.GetByIndex(0);
+			yObj = value.GetByIndex(1);
+			zObj = value.GetByIndex(2);
+			wObj = value.GetByIndex(3);
+			if(!xObj.IsNumber() || !yObj.IsNumber() || !zObj.IsNumber() || !wObj.IsNumber())
+			{	
+				return;
+			}
+		}
 
 		CL_Vec4f val((float)xObj.ToNumber(), (float)yObj.ToNumber(), (float)zObj.ToNumber(), (float)wObj.ToNumber());
 		prop->Set(val);

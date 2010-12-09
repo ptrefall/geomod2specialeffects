@@ -14,6 +14,7 @@ namespace Engine
 	class ResMgr;
 	class ScriptMgr;
 	class EntityManager;
+	class IEntity;
 	class CoreMgr
 	{
 	public:
@@ -25,6 +26,8 @@ namespace Engine
 		ResMgr *getResMgr() const { return resMgr; }
 		ScriptMgr *getScriptMgr() const { return scriptMgr; }
 		EntityManager *getEntityMgr() const { return entityMgr; }
+
+		void addToScene(IEntity *entity);
 
 	private:
 		CL_SetupCore *setupCore; // Initializes clanlib core lib when CoreManager is instanciated/constructed
