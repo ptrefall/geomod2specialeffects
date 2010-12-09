@@ -3,6 +3,10 @@ if(SpiralEvaluator == nil) then
 	SpiralEvaluator = {}
 end
 
+if(GM_DERIVATION_EXPLICIT == nil) then
+	GM_DERIVATION_EXPLICIT = 0
+end
+
 function SpiralEvaluator:OnInit(curve)
 	--curve:AddProperty("ResultSetDim", 0)
 	--curve:AddProperty("DerivationMethod", 0)
@@ -12,7 +16,7 @@ function SpiralEvaluator:OnInit(curve)
 end
 
 function SpiralEvaluator:OnEvent(curve, event)
-	if(event.id = "Eval") then
+	if(event.id == "Eval") then
 		SpiralEvaluator:OnEval(curve, event.arg0, event.arg1, event.arg2)
 	end
 end

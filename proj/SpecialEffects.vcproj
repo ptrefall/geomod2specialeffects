@@ -198,10 +198,22 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="Scenes"
+					>
+					<File
+						RelativePath="..\resources\Scripts\Scenes\default_scene.lua"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="XML"
 				>
+				<File
+					RelativePath="..\resources\XML\config.xml"
+					>
+				</File>
 				<Filter
 					Name="Entities"
 					>

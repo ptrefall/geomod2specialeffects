@@ -17,6 +17,8 @@ namespace Engine
 		ScriptMgr(CoreMgr *coreMgr);
 		~ScriptMgr();
 
+		void init();
+
 		LuaPlus::LuaStateOwner *GetGlobalState() { return &globalState; }
 
 		int doFile(const CL_String &fileName);
@@ -27,8 +29,6 @@ namespace Engine
 		ExposeComponentManager *getExposedComponentMgr() const { return exposedComponentMgr; }
 
 	private:
-		void init();
-
 		void Print(LuaPlus::LuaObject text);
 
 		LuaPlus::LuaStateOwner globalState;

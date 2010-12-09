@@ -1,0 +1,5 @@
+<Config>
+  <Scene>
+    <Script>default_scene.lua</Script>
+  </Scene>
+</Config>

@@ -9,6 +9,9 @@
 #include <Entity/EntityManager.h>
 #include <GMLib/gmWindow.h>
 
+#include <Scene/Scene.h>
+#include <Resource/IResource.h>
+
 using namespace Engine;
 
 CoreMgr::CoreMgr(const CL_String &base_path)
@@ -62,8 +65,13 @@ void CoreMgr::init(const CL_String &base_path)
 	eventMgr = new Events::EventManager();
 	entityMgr = new EntityManager(this);
 	scriptMgr = new ScriptMgr(this);
+	scriptMgr->init();
 	scene = new GMlib::GMWindow();
 	scene->init();
+
+	IResource *cfg = resMgr->create("config.xml", "XML");
+	CL_String scene_script = cfg->getString("Config/Scene/Script");
+	Scene::init_scene(this, scene_script);
 }
 
 void CoreMgr::run()

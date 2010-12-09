@@ -12,7 +12,6 @@ ScriptMgr::ScriptMgr(CoreMgr *coreMgr)
 : exposedEntityMgr(NULL), exposedComponentMgr(NULL)
 {
 	this->coreMgr = coreMgr;
-	init();
 }
 
 ScriptMgr::~ScriptMgr()
