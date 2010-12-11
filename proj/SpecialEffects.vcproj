@@ -194,6 +194,10 @@
 					Name="Components"
 					>
 					<File
+						RelativePath="..\resources\Scripts\Components\BezierEvaluator.lua"
+						>
+					</File>
+					<File
 						RelativePath="..\resources\Scripts\Components\ButterflyEvaluator.lua"
 						>
 					</File>

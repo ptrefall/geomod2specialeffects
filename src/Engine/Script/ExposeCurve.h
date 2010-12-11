@@ -17,6 +17,7 @@ protected:
 	void init();
 
 	void Replot(LuaPlus::LuaObject lSelf, LuaPlus::LuaObject lM, LuaPlus::LuaObject lD);
+	LuaPlus::LuaObject GetBernHermValue(LuaPlus::LuaObject lSelf, LuaPlus::LuaObject lX, LuaPlus::LuaObject lY);
 
 	CoreMgr *coreMgr;
 

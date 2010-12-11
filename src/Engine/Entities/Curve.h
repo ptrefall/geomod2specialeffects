@@ -2,6 +2,8 @@
 
 #include <Entity/IEntity.h>
 #include <GMlib/gmPCurve.h>
+#include <GMlib/gmDMatrix.h>
+#include <GMlib/gmDVector.h>
 
 namespace Engine
 {
@@ -19,18 +21,38 @@ namespace Engine
 		virtual std::string getIdentity() const { return "Curve"; }
 		virtual bool isClosed() const { return closed.Get(); }
 
+		float getBernHermValue(int x, int y);
+
 	protected:
 		virtual void eval(float t, int d, bool l=true);
 		virtual float getStartP() { return param_start.Get(); }
 		virtual float getEndP() { return param_end.Get(); }
 
 	private:
+
+		//Bezier member variables
+		GMlib::DMatrix<float> bernHermMat;
+		GMlib::DVector<GMlib::Vector<float, 3>> controlPoints;
+
+		//Parametric curve properties
 		Property<bool> closed;
 		Property<float> param_start;
 		Property<float> param_end;
+		Property<int> size;
 		Property<int> resultSet_dim;
 		Property<int> derivation_method;
 		Property<CL_Vec4f> resultSet;
+
+		//Bezier curve properties
+		Property<CL_Vec3f> controlPoint; //Change this to add another controlPoint
+		Property<int> numControlPoints; //Holds number of control points
+		Property<CL_Vec2f> bernHermDim; //Dimension of the Bernstein-Hermite polynomials
+
+		//SceneObject properties
+		Property<CL_Vec3f> position;
+
+		CL_Slot slotSizeChanged;
+		void OnSizeChanged(const int &oldValue, const int &newValue);
 
 		CL_Slot slotResultSetDimChanged;
 		void OnResultSetDimChanged(const int &oldValue, const int &newValue);
@@ -40,5 +62,14 @@ namespace Engine
 
 		CL_Slot slotResultSetChanged;
 		void OnResultSetChanged(const CL_Vec4f &oldValue, const CL_Vec4f &newValue);
+
+		CL_Slot slotControlPointChanged;
+		void OnControlPointChanged(const CL_Vec3f &oldValue, const CL_Vec3f &newValue);
+
+		CL_Slot slotBernHermDimChanged;
+		void OnBernHermDimChanged(const CL_Vec2f &oldValue, const CL_Vec2f &newValue);
+
+		CL_Slot slotPositionChanged;
+		void OnPositionChanged(const CL_Vec3f &oldValue, const CL_Vec3f &newValue);
 	};
 }

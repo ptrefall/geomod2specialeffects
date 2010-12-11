@@ -17,5 +17,9 @@
       <Name>ParamEnd</Name>
       <Value>75.3982236</Value>
     </Property>
+    <Property>
+      <Name>Size</Name>
+      <Value>2</Value>
+    </Property>
 	</Properties>
 </Entity>
