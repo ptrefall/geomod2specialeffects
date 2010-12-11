@@ -60,3 +60,42 @@ void ExposeCurve::Replot(LuaObject lSelf, LuaPlus::LuaObject lM, LuaPlus::LuaObj
 		d = (int)lD.GetFloat();
 	curve->replot(m, d);
 }
+
+LuaObject ExposeCurve::GetBernHermValue(LuaObject lSelf, LuaObject lX, LuaObject lY)
+{
+	if(!lSelf.IsTable())
+	{
+		CL_String msg = cl_format("Self was not a table (it's a %1)", lSelf.TypeName());
+		throw CL_Exception(msg);
+	}
+
+	if(!lX.IsInteger() && !lX.IsNumber())
+	{
+		CL_String msg = cl_format("X was not an integer, nor a number (it's a %1)", lX.TypeName());
+		throw CL_Exception(msg);
+	}
+
+	if(!lY.IsInteger() && !lY.IsNumber())
+	{
+		CL_String msg = cl_format("Y was not an integer, nor a number (it's a %1)", lY.TypeName());
+		throw CL_Exception(msg);
+	}
+
+	int x = -1;
+	int y = -1;
+
+	if(lX.IsInteger())
+		x = lX.ToInteger();
+	else
+		x = (int)lX.GetFloat();
+
+	if(lY.IsInteger())
+		y = lY.ToInteger();
+	else if(lY.IsNumber())
+		y = (int)lY.GetFloat();
+
+	float value = curve->getBernHermValue(x,y);
+	LuaObject lValue;
+	lValue.AssignNumber(coreMgr->getScriptMgr()->GetGlobalState()->Get(), value);
+	return lValue;
+}
