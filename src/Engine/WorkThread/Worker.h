@@ -9,7 +9,7 @@ namespace Engine
 	class Worker
 	{
 	public:
-		Worker(CoreMgr *coreMgr, int core, CL_Event &work_event);
+		Worker(CoreMgr *coreMgr, int core, const CL_Event &work_event);
 		virtual ~Worker();
 
 		void worker_main(int core_id);
@@ -21,9 +21,10 @@ namespace Engine
 		CL_Thread thread;
 		CL_Mutex mutex;
 		CL_Event event_stop;
-		CL_Event &work_event;
+		CL_Event work_event;
 
 		volatile bool is_working;
+		int core_id;
 
 		WorkProducer *producer;
 		WorkData *data;

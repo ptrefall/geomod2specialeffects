@@ -9,8 +9,7 @@ using namespace Engine;
 WorkThreadMgr::WorkThreadMgr(CoreMgr *coreMgr)
 : coreMgr(coreMgr)
 {
-	num_threads = (unsigned int)CL_System::get_num_cores();
-	for(unsigned int core = 0; core < num_threads; core++)
+	for(unsigned int core = 0; core < (unsigned int)CL_System::get_num_cores(); core++)
 	{
 		work_for_worker.push_back(CL_Event());
 		workers.push_back(new Worker(coreMgr, core, work_for_worker[core]));
@@ -19,6 +18,11 @@ WorkThreadMgr::WorkThreadMgr(CoreMgr *coreMgr)
 
 WorkThreadMgr::~WorkThreadMgr()
 {
+}
+
+void WorkThreadMgr::update(float dt)
+{
+	assignWork();
 }
 
 bool WorkThreadMgr::isWorkGroupCompletedFor(WorkProducer *producer)
@@ -58,6 +62,18 @@ void WorkThreadMgr::assignWork()
 	std::map<WorkProducer*, WorkProduction*>::iterator it = produce.begin();
 	for(; it != produce.end(); ++it)
 	{
+		if(it->second->isDone())
+		{
+			it->first->finished(it->second->getDoneData());
+			produce.erase(it);
+			
+			if(produce.empty())
+				return;
+
+			it = produce.begin();
+			continue;
+		}
+
 		for(unsigned int i = 0; i < it->second->getWorkDataSize(); i++)
 		{
 			if(it->second->isUnderWork(i) == false)
@@ -91,9 +107,4 @@ void WorkThreadMgr::finishedWork(WorkProducer *producer, unsigned int index)
 		throw CL_Exception("Couldn't find producer of finished work!");
 
 	it->second->setFinishedWork(index);
-	if(it->second->isDone())
-	{
-		producer->finished(it->second->getDoneData());
-		produce.erase(it);
-	}
 }

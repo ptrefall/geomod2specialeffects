@@ -21,7 +21,9 @@ namespace Engine
 		void addWorkGroup(WorkProducer *producer, std::vector<WorkData*> work_group, WorkDoneData *doneData);
 		
 		void assignWork();
-		void finishedWork(WorkProducer *producer, unsigned int index);	
+		void finishedWork(WorkProducer *producer, unsigned int index);
+
+		void update(float dt);
 
 	private:
 		std::map<WorkProducer*, WorkProduction*> produce;

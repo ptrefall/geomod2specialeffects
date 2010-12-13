@@ -48,7 +48,7 @@ void Bezier::handle(WorkData *data)
 void Bezier::eval(GMlib::DVector< GMlib::Vector<float, 3> >& _p, float t, int d, bool l)
 {
 	//Send out an event that we're evaluating the bezier curve! Never know if any component logic would want to know ;)
-	this->ExecuteEventOnComponents(Events::Event("Eval", Events::EventValue(t), Events::EventValue(d), Events::EventValue(l)));
+	//this->ExecuteEventOnComponents(Events::Event("Eval", Events::EventValue(t), Events::EventValue(d), Events::EventValue(l)));
 
 	_p.setDim(resultSet_dim.Get()+1);
 	
