@@ -3,7 +3,7 @@
 namespace Engine
 {
 	class GuiMgr
-	{
+	{		
 	public:
 		GuiMgr(const bool &fullscr, const int &width, const int &height, const int &depth, const int &vsync);
 		~GuiMgr();
