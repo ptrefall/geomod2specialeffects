@@ -18,10 +18,12 @@ namespace Engine
 		static IEntity* Create(unsigned int id, const CL_String &type, const CL_String &name, CoreMgr *coreMgr, ComponentFactory &factory) { return new Curve(id, type, name, coreMgr, factory); }
 		virtual CL_String getSpecialType() const { return GetStaticSpecialType(); }
 
-		virtual std::string getIdentity() const { return "Curve"; }
+		virtual std::string getIdentity() const { return identity.Get().c_str(); }
 		virtual bool isClosed() const { return closed.Get(); }
 
 		float getBernHermValue(int x, int y);
+		void calcBernHermMultControlPoints();
+		float getBernHermMultControlPoints(int x, int y);
 
 	protected:
 		virtual void eval(float t, int d, bool l=true);
@@ -33,8 +35,10 @@ namespace Engine
 		//Bezier member variables
 		GMlib::DMatrix<float> bernHermMat;
 		GMlib::DVector<GMlib::Vector<float, 3>> controlPoints;
+		GMlib::DVector<GMlib::Vector<float, 3>> bernHermMatMultControlPoints;
 
 		//Parametric curve properties
+		Property<CL_String> identity;
 		Property<bool> closed;
 		Property<float> param_start;
 		Property<float> param_end;
@@ -47,6 +51,7 @@ namespace Engine
 		Property<CL_Vec3f> controlPoint; //Change this to add another controlPoint
 		Property<int> numControlPoints; //Holds number of control points
 		Property<CL_Vec2f> bernHermDim; //Dimension of the Bernstein-Hermite polynomials
+		Property<CL_Vec3f> bernHermIndex; //Set value of a bernHerm index via this property
 
 		//SceneObject properties
 		Property<CL_Vec3f> position;
@@ -68,6 +73,9 @@ namespace Engine
 
 		CL_Slot slotBernHermDimChanged;
 		void OnBernHermDimChanged(const CL_Vec2f &oldValue, const CL_Vec2f &newValue);
+
+		CL_Slot slotBernHermIndexChanged;
+		void OnBernHermIndexChanged(const CL_Vec3f &oldValue, const CL_Vec3f &newValue);
 
 		CL_Slot slotPositionChanged;
 		void OnPositionChanged(const CL_Vec3f &oldValue, const CL_Vec3f &newValue);

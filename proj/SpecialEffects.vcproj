@@ -226,6 +226,10 @@
 					Name="Entities"
 					>
 					<File
+						RelativePath="..\resources\XML\Entities\BezierCurve.xml"
+						>
+					</File>
+					<File
 						RelativePath="..\resources\XML\Entities\ButterflyCurve.xml"
 						>
 					</File>

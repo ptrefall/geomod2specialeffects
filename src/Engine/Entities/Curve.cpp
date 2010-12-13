@@ -10,6 +10,7 @@ Curve::Curve(unsigned int id, const CL_String &type, const CL_String &name, Core
   GMlib::PCurve<float>()
 {
 	//Parametric curve properties
+	identity = this->AddProperty<CL_String>("Identity", "Curve");
 	closed = this->AddProperty<bool>("Closed", false);
 	param_start = this->AddProperty<float>("ParamStart", 0.0f);
 	param_end = this->AddProperty<float>("ParamEnd", 0.0f);
@@ -22,6 +23,7 @@ Curve::Curve(unsigned int id, const CL_String &type, const CL_String &name, Core
 	controlPoint = this->AddProperty<CL_Vec3f>("ControlPoint", CL_Vec3f(0.0f, 0.0f, 0.0f));
 	numControlPoints = this->AddProperty<int>("NumControlPoints", 0);
 	bernHermDim = this->AddProperty<CL_Vec2f>("BernHermDim", CL_Vec2f(0.0f, 0.0f));
+	bernHermIndex = this->AddProperty<CL_Vec3f>("BernHermMatIndex", CL_Vec3f(0.0f, 0.0f, 0.0f));
 
 	//SceneObject properties
 	position = this->AddProperty<CL_Vec3f>("Position", CL_Vec3f(0.0f, 0.0f, 0.0f));
@@ -35,6 +37,7 @@ Curve::Curve(unsigned int id, const CL_String &type, const CL_String &name, Core
 	//Bezier property callbacks
 	slotControlPointChanged = controlPoint.ValueChanged().connect(this, &Curve::OnControlPointChanged);
 	slotBernHermDimChanged = bernHermDim.ValueChanged().connect(this, &Curve::OnBernHermDimChanged);
+	slotBernHermIndexChanged = bernHermIndex.ValueChanged().connect(this, &Curve::OnBernHermIndexChanged);
 
 	//SceneObject property callbacks
 	slotPositionChanged = position.ValueChanged().connect(this, &Curve::OnPositionChanged);
@@ -55,6 +58,16 @@ float Curve::getBernHermValue(int x, int y)
 		return 0.0f;
 
 	return bernHermMat[x][y];
+}
+
+void Curve::calcBernHermMultControlPoints()
+{
+	bernHermMatMultControlPoints = bernHermMat * controlPoints;
+}
+
+float Curve::getBernHermMultControlPoints(int x, int y)
+{
+	return bernHermMatMultControlPoints[x][y];
 }
 
 /////////////////////////////////////////
@@ -97,6 +110,14 @@ void Curve::OnControlPointChanged(const CL_Vec3f &oldValue, const CL_Vec3f &newV
 void Curve::OnBernHermDimChanged(const CL_Vec2f &oldValue, const CL_Vec2f &newValue)
 {
 	bernHermMat.setDim((int)newValue.x, (int)newValue.y);
+}
+
+void Curve::OnBernHermIndexChanged(const CL_Vec3f &oldValue, const CL_Vec3f &newValue)
+{
+	if(newValue.x > bernHermMat.getDim1()-1 || newValue.x < 0 || newValue.y > bernHermMat.getDim2()-1 || newValue.y < 0)
+		return;
+
+	bernHermMat[(int)newValue.x][(int)newValue.y] = newValue.z;
 }
 
 /////////////////////////////////////

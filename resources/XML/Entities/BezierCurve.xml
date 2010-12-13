@@ -1,17 +1,17 @@
 <Entity>
-  <Type>SpiralCurve</Type>
+  <Type>BezierCurve</Type>
   <Special>Curve</Special>
 	<Components>
-    <Component>SpiralEvaluator</Component>
+    <Component>BezierEvaluator</Component>
 	</Components>
 	<Properties>
     <Property>
       <Name>Identity</Name>
-      <Value>Spiral</Value>
+      <Value>Bezier</Value>
     </Property>
     <Property>
       <Name>ResultSetDim</Name>
-      <Value>0</Value>
+      <Value>2</Value>
     </Property>
     <Property>
       <Name>DerivationMethod</Name>
@@ -19,7 +19,11 @@
     </Property>
     <Property>
       <Name>ParamEnd</Name>
-      <Value>6.28318</Value>
+      <Value>1.0</Value>
+    </Property>
+    <Property>
+      <Name>Size</Name>
+      <Value>2</Value>
     </Property>
 	</Properties>
 </Entity>

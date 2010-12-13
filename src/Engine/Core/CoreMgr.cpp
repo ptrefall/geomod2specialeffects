@@ -70,7 +70,14 @@ void CoreMgr::init(const CL_String &base_path)
 	int fail = 0;
 
 	resMgr = new ResMgr(this, base_path);
-	guiMgr = new GuiMgr(false, 640, 480, 16, 0);
+	IResource *cfg = resMgr->create("config.xml", "XML");
+
+	int fullscreen = cfg->getBool("Config/GUI/Fullscreen");
+	int w = cfg->getInt("Config/GUI/Width");
+	int h = cfg->getInt("Config/GUI/Height");
+	int d = cfg->getInt("Config/GUI/Depth");
+	int vsync = cfg->getInt("Config/GUI/VSync");
+	guiMgr = new GuiMgr((fullscreen > 0), w, h, d, vsync);
 	eventMgr = new Events::EventManager();
 	entityMgr = new EntityManager(this);
 	scriptMgr = new ScriptMgr(this);
@@ -78,7 +85,6 @@ void CoreMgr::init(const CL_String &base_path)
 	scene = new GMlib::GMWindow();
 	scene->init();
 
-	IResource *cfg = resMgr->create("config.xml", "XML");
 	CL_String scene_script = cfg->getString("Config/Scene/Script");
 	Scene::init_scene(this, scene_script);
 }

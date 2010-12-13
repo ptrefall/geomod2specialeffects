@@ -6,6 +6,10 @@
 	</Components>
 	<Properties>
     <Property>
+      <Name>Identity</Name>
+      <Value>Butterfly</Value>
+    </Property>
+    <Property>
       <Name>ResultSetDim</Name>
       <Value>2</Value>
     </Property>
