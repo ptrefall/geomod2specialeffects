@@ -29,6 +29,8 @@
  *  \date   2010-04-13
  */
 
+#include "../../src/Engine/Parametric/PCurve.h"
+#include "gmPCurve.h"
 
 namespace GMlib {
 
@@ -68,7 +70,12 @@ namespace GMlib {
 //      }
 
       // GL States
-      glLineWidth( this->_curve->getLineWidth() );
+	  GMlib::PCurve<T> *p_c = dynamic_cast< GMlib::PCurve<T>* >(_curve);
+	  Engine::PCurve *pp_c = dynamic_cast< Engine::PCurve* >(_curve);
+	  if(p_c)
+		glLineWidth( p_c->getLineWidth() );
+	  else if(pp_c)
+		glLineWidth( pp_c->getLineWidth() );
 
       // Binder VBO
       glBindBuffer( GL_ARRAY_BUFFER, _vbo );

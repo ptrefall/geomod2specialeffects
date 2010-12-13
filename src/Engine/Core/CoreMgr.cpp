@@ -13,6 +13,7 @@
 
 #include <Scene/Scene.h>
 #include <Resource/IResource.h>
+#include <WorkThread/WorkThreadMgr.h>
 
 using namespace Engine;
 
@@ -30,7 +31,7 @@ namespace {
 
 CoreMgr::CoreMgr(const CL_String &base_path)
 : setupCore(new CL_SetupCore()),
-  eventMgr(NULL), guiMgr(NULL), resMgr(NULL), scriptMgr(NULL), entityMgr(NULL), scene(NULL)
+  eventMgr(NULL), guiMgr(NULL), resMgr(NULL), scriptMgr(NULL), entityMgr(NULL), workThreadMgr(NULL), scene(NULL)
 {
 	init(base_path);
 	run();
@@ -63,6 +64,11 @@ CoreMgr::~CoreMgr()
 		delete entityMgr;
 		entityMgr = NULL;
 	}
+	if(workThreadMgr)
+	{
+		delete workThreadMgr;
+		workThreadMgr = NULL;
+	}
 	if(scene)
 	{
 		delete scene;
@@ -94,6 +100,7 @@ void CoreMgr::init(const CL_String &base_path)
 	entityMgr = new EntityManager(this);
 	scriptMgr = new ScriptMgr(this);
 	scriptMgr->init();
+	workThreadMgr = new WorkThreadMgr();
 	scene = new GMlib::GMWindow();
 	scene->init();
 

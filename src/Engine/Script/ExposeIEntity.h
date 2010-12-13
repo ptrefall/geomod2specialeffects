@@ -12,6 +12,7 @@ class ExposePropertyContainer;
 class ExposeComponentContainer;
 
 class ExposeCurve;
+class ExposeBezier;
 
 class ExposeIEntity
 {
@@ -40,6 +41,7 @@ protected:
 	ExposeComponentContainer *exposedCompContainer;
 
 	ExposeCurve *exposedCurve;
+	ExposeBezier *exposedBezier;
 };
 
 }

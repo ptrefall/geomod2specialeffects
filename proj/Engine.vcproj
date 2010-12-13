@@ -350,6 +350,14 @@
 				Name="Entities"
 				>
 				<File
+					RelativePath="..\src\Engine\Entities\Bezier.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\Engine\Entities\Bezier.h"
+					>
+				</File>
+				<File
 					RelativePath="..\src\Engine\Entities\Curve.cpp"
 					>
 				</File>
@@ -372,6 +380,14 @@
 				<Filter
 					Name="Exposure"
 					>
+					<File
+						RelativePath="..\src\Engine\Script\ExposeBezier.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\Engine\Script\ExposeBezier.h"
+						>
+					</File>
 					<File
 						RelativePath="..\src\Engine\Script\ExposeComponent.cpp"
 						>
@@ -511,6 +527,62 @@
 				</File>
 				<File
 					RelativePath="..\src\Engine\Scene\Scene.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Parametric"
+				>
+				<File
+					RelativePath="..\src\Engine\Parametric\PCurve.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\Engine\Parametric\PCurve.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="WorkThread"
+				>
+				<File
+					RelativePath="..\src\Engine\WorkThread\WorkData.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\Engine\WorkThread\WorkData.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\Engine\WorkThread\WorkDoneData.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\Engine\WorkThread\WorkDoneData.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\Engine\WorkThread\WorkProducer.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\Engine\WorkThread\WorkProducer.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\Engine\WorkThread\WorkProduction.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\Engine\WorkThread\WorkProduction.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\Engine\WorkThread\WorkThreadMgr.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\Engine\WorkThread\WorkThreadMgr.h"
 					>
 				</File>
 			</Filter>

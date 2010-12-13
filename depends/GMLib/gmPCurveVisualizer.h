@@ -60,7 +60,7 @@ namespace GMlib {
     void          set( SceneObject* obj );
 
   protected:
-    PCurve<T>     *_curve;
+    Parametrics<T, 1>     *_curve;
 
     GLuint        _vbo;
     int           _no_vertices;

@@ -5,13 +5,13 @@
 namespace Engine
 {
 class CoreMgr;
-class Curve;
+class Bezier;
 
-class ExposeCurve
+class ExposeBezier
 {
 public:
-	ExposeCurve(CoreMgr *coreMgr, LuaPlus::LuaObject &lEntity, LuaPlus::LuaObject &lMeta, Curve *curve);
-	~ExposeCurve();
+	ExposeBezier(CoreMgr *coreMgr, LuaPlus::LuaObject &lEntity, LuaPlus::LuaObject &lMeta, Bezier *curve);
+	~ExposeBezier();
 
 protected:
 	void init();
@@ -20,7 +20,7 @@ protected:
 
 	CoreMgr *coreMgr;
 
-	Curve *curve;
+	Bezier *curve;
 	LuaPlus::LuaObject lEntity;
 	LuaPlus::LuaObject lMeta;
 };
