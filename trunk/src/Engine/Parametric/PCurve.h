@@ -96,6 +96,8 @@ public:
 
 	GMlib::Point<float,3> operator()( float t );
 
+	virtual void finished(WorkDoneData *data);
+
 protected:
 	GMlib::Array<GMlib::PCurveVisualizer<float>*> _pcurve_visualizers;
 	GMlib::PCurveVisualizer<float> *_default_visualizer;
@@ -123,8 +125,6 @@ protected:
 	virtual float getEndP() = 0;
 	virtual float getStartP() = 0;
 	float shift( float t );
-
-	virtual void localSimulate(double dt);
 
 private:
 	void _eval(GMlib::DVector< GMlib::Vector<float, 3> >& p, float t, int d );

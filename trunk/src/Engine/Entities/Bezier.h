@@ -23,6 +23,8 @@ namespace Engine
 
 		void calcBernHerm(GMlib::DMatrix<float> &bernHermMat, float t, int d, float size);
 
+		virtual void handle(WorkData *data);
+
 	protected:
 		virtual void eval(GMlib::DVector< GMlib::Vector<float, 3> >& _p, float t, int d, bool l=true);
 		virtual float getStartP() { return param_start.Get(); }

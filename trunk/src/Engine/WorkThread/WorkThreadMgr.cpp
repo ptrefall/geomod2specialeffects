@@ -1,11 +1,20 @@
 #include "precomp.h"
 #include "WorkThreadMgr.h"
 #include "WorkProduction.h"
+#include "Worker.h"
+#include "WorkProducer.h"
 
 using namespace Engine;
 
-WorkThreadMgr::WorkThreadMgr()
+WorkThreadMgr::WorkThreadMgr(CoreMgr *coreMgr)
+: coreMgr(coreMgr)
 {
+	num_threads = (unsigned int)CL_System::get_num_cores();
+	for(unsigned int core = 0; core < num_threads; core++)
+	{
+		work_for_worker.push_back(CL_Event());
+		workers.push_back(new Worker(coreMgr, core, work_for_worker[core]));
+	}
 }
 
 WorkThreadMgr::~WorkThreadMgr()
@@ -40,4 +49,51 @@ void WorkThreadMgr::addWorkGroup(WorkProducer *producer, std::vector<WorkData*> 
 		return;
 
 	produce[producer] = new WorkProduction(work_group, doneData);
+
+	assignWork();
+}
+
+void WorkThreadMgr::assignWork()
+{
+	std::map<WorkProducer*, WorkProduction*>::iterator it = produce.begin();
+	for(; it != produce.end(); ++it)
+	{
+		for(unsigned int i = 0; i < it->second->getWorkDataSize(); i++)
+		{
+			if(it->second->isUnderWork(i) == false)
+			{
+				int foundWorker = -1;
+				for(unsigned int core = 0; core < workers.size(); core++)
+				{
+					if(workers[core]->isAtWork() == false)
+					{
+						foundWorker = core;
+						break;
+					}
+				}
+
+				if(foundWorker > -1)
+				{
+					it->second->setUnderWork(i);
+					workers[foundWorker]->setToWork(it->first, it->second->getWorkData(i), i);
+					work_for_worker[foundWorker].set();
+					continue;
+				}
+			}
+		}
+	}
+}
+
+void WorkThreadMgr::finishedWork(WorkProducer *producer, unsigned int index)
+{
+	std::map<WorkProducer*, WorkProduction*>::iterator it = produce.find(producer);
+	if(it == produce.end())
+		throw CL_Exception("Couldn't find producer of finished work!");
+
+	it->second->setFinishedWork(index);
+	if(it->second->isDone())
+	{
+		producer->finished(it->second->getDoneData());
+		produce.erase(it);
+	}
 }
