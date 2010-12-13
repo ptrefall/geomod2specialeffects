@@ -294,15 +294,11 @@ void PCurve::postReplot(GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> 
 /////////////////////////////////////
 // CHECKS MULTITHREADED WORK STATUS
 /////////////////////////////////////
-void PCurve::localSimulate(double dt)
+void PCurve::finished(WorkDoneData *data)
 {
-	if(coreMgr->getWorkThreadMgr()->isWorkGroupCompletedFor(this))
-	{
-		PCurveEvalDoneData *doneData = static_cast<PCurveEvalDoneData *>(coreMgr->getWorkThreadMgr()->getWorkGroupDoneData(this));
-		postResampleWorkDone(doneData->p, doneData->m, doneData->d, doneData->start, doneData->end);
-		postReplot(doneData->p, doneData->m, doneData->d);
-		delete doneData;
-	}
+	PCurveEvalDoneData *evalData = static_cast<PCurveEvalDoneData*>(data);
+	postResampleWorkDone(evalData->p, evalData->m, evalData->d, evalData->start, evalData->end);
+	postReplot(evalData->p, evalData->m, evalData->d);
 }
 
 void PCurve::removeVisualizer( GMlib::Visualizer* visualizer ) 

@@ -562,6 +562,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\src\Engine\WorkThread\Worker.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\Engine\WorkThread\Worker.h"
+					>
+				</File>
+				<File
 					RelativePath="..\src\Engine\WorkThread\WorkProducer.cpp"
 					>
 				</File>

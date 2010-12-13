@@ -39,6 +39,12 @@ Bezier::~Bezier()
 {
 }
 
+void Bezier::handle(WorkData *data)
+{
+	PCurveEvalData *evalData = static_cast<PCurveEvalData*>(data);
+	eval(evalData->p, evalData->t, evalData->d, evalData->l);
+}
+
 void Bezier::eval(GMlib::DVector< GMlib::Vector<float, 3> >& _p, float t, int d, bool l)
 {
 	//Send out an event that we're evaluating the bezier curve! Never know if any component logic would want to know ;)

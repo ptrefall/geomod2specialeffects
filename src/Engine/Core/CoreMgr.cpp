@@ -100,7 +100,7 @@ void CoreMgr::init(const CL_String &base_path)
 	entityMgr = new EntityManager(this);
 	scriptMgr = new ScriptMgr(this);
 	scriptMgr->init();
-	workThreadMgr = new WorkThreadMgr();
+	workThreadMgr = new WorkThreadMgr(this);
 	scene = new GMlib::GMWindow();
 	scene->init();
 
