@@ -15,6 +15,7 @@ namespace Engine
 	class ScriptMgr;
 	class EntityManager;
 	class IEntity;
+	class WorkThreadMgr;
 	class CoreMgr
 	{
 	public:
@@ -26,6 +27,7 @@ namespace Engine
 		ResMgr *getResMgr() const { return resMgr; }
 		ScriptMgr *getScriptMgr() const { return scriptMgr; }
 		EntityManager *getEntityMgr() const { return entityMgr; }
+		WorkThreadMgr *getWorkThreadMgr() const { return workThreadMgr; }
 
 		void addToScene(IEntity *entity);
 
@@ -40,6 +42,7 @@ namespace Engine
 		ResMgr *resMgr;
 		ScriptMgr *scriptMgr;
 		EntityManager *entityMgr;
+		WorkThreadMgr *workThreadMgr;
 		GMlib::GMWindow *scene;
 	};
 }

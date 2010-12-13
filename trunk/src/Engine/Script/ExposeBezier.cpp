@@ -1,14 +1,14 @@
 #include "precomp.h"
-#include "ExposeCurve.h"
+#include "ExposeBezier.h"
 #include "ExposeIEntity.h"
 #include "ScriptMgr.h"
 #include <Core/CoreMgr.h>
-#include <Entities/Curve.h>
+#include <Entities/Bezier.h>
 
 using namespace Engine;
 using namespace LuaPlus;
 
-ExposeCurve::ExposeCurve(CoreMgr *coreMgr, LuaPlus::LuaObject &lEntity, LuaPlus::LuaObject &lMeta, Curve *curve)
+ExposeBezier::ExposeBezier(CoreMgr *coreMgr, LuaPlus::LuaObject &lEntity, LuaPlus::LuaObject &lMeta, Bezier *curve)
 {
 	this->coreMgr = coreMgr;
 	this->lEntity = lEntity;
@@ -17,16 +17,16 @@ ExposeCurve::ExposeCurve(CoreMgr *coreMgr, LuaPlus::LuaObject &lEntity, LuaPlus:
 	init();
 }
 
-ExposeCurve::~ExposeCurve()
+ExposeBezier::~ExposeBezier()
 {
 }
 
-void ExposeCurve::init()
+void ExposeBezier::init()
 {
-	lMeta.RegisterDirect("Replot", *this, &ExposeCurve::Replot);
+	lMeta.RegisterDirect("Replot", *this, &ExposeBezier::Replot);
 }
 
-void ExposeCurve::Replot(LuaObject lSelf, LuaPlus::LuaObject lM, LuaPlus::LuaObject lD)
+void ExposeBezier::Replot(LuaObject lSelf, LuaPlus::LuaObject lM, LuaPlus::LuaObject lD)
 {
 	if(!lSelf.IsTable())
 	{

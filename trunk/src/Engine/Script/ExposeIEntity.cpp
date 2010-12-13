@@ -4,10 +4,12 @@
 #include "ExposePropertyContainer.h"
 #include "ExposeComponentContainer.h"
 #include "ExposeCurve.h"
+#include "ExposeBezier.h"
 #include "ScriptMgr.h"
 #include <Core/CoreMgr.h>
 #include <Entity/IEntity.h>
 #include <Entities/Curve.h>
+#include <Entities/Bezier.h>
 #include <Event/Event.h>
 #include <Event/EventValue.h>
 
@@ -73,6 +75,10 @@ void ExposeIEntity::init()
 	if(entity->getSpecialType() == Curve::GetStaticSpecialType())
 	{
 		exposedCurve = new ExposeCurve(coreMgr, lEntity, lMeta, dynamic_cast<Curve*>(entity));
+	}
+	else if(entity->getSpecialType() == Bezier::GetStaticSpecialType())
+	{
+		exposedBezier = new ExposeBezier(coreMgr, lEntity, lMeta, dynamic_cast<Bezier*>(entity));
 	}
 }
 

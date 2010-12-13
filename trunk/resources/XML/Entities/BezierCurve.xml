@@ -1,6 +1,6 @@
 <Entity>
   <Type>BezierCurve</Type>
-  <Special>Curve</Special>
+  <Special>Bezier</Special>
 	<Components>
     <Component>BezierEvaluator</Component>
 	</Components>

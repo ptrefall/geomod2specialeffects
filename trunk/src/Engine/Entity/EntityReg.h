@@ -6,6 +6,7 @@
 
 //Specials
 #include <Entities/Curve.h>
+#include <Entities/Bezier.h>
 
 namespace Engine
 {
@@ -16,6 +17,7 @@ namespace Engine
 		{
 			//Register special C++ entity types
 			factory->RegisterSpecial(Curve::GetStaticSpecialType(), &Curve::Create);
+			factory->RegisterSpecial(Bezier::GetStaticSpecialType(), &Bezier::Create);
 
 			//Register XML defined entities
 			std::vector<CL_String> entities = coreMgr->getResMgr()->getFilesInDir("/XML/Entities/");
