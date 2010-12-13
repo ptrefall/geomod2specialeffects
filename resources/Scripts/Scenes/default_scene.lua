@@ -13,12 +13,12 @@ function Scene:Init()
 	--butterfly:SetPosition({x=0.0, y=0.0, z=0.0})
 	
 	local bezier = CreateEntity("BezierCurve")
-	bezier:SetControlPoint({x=-2.0, y=0.0, z=-10.0})
-	bezier:SetControlPoint({x=-1.0, y=2.0, z=-10.0})
-	bezier:SetControlPoint({x= 1.0, y=2.0, z=-10.0})
-	bezier:SetControlPoint({x= 2.0, y=0.0, z=-10.0})
+	bezier:SetControlPoint({x=-2.0, y=0.0, z=10.0})
+	bezier:SetControlPoint({x=-1.0, y=2.0, z=10.0})
+	bezier:SetControlPoint({x= 1.0, y=2.0, z=10.0})
+	bezier:SetControlPoint({x= 2.0, y=0.0, z=10.0})
 	AddToScene(bezier)
-	bezier:Replot(1000, 2)
+	bezier:Replot(1000)
 	
 end
 

@@ -16,6 +16,18 @@
 
 using namespace Engine;
 
+namespace {
+	int g_width, g_height;
+	bool g_resize;
+
+	void g_resize_cb(int w, int h)
+	{
+		g_width = w;
+		g_height = h;
+		g_resize = true;
+	}
+}
+
 CoreMgr::CoreMgr(const CL_String &base_path)
 : setupCore(new CL_SetupCore()),
   eventMgr(NULL), guiMgr(NULL), resMgr(NULL), scriptMgr(NULL), entityMgr(NULL), scene(NULL)
@@ -87,6 +99,11 @@ void CoreMgr::init(const CL_String &base_path)
 
 	CL_String scene_script = cfg->getString("Config/Scene/Script");
 	Scene::init_scene(this, scene_script);
+
+	g_width = w;
+	g_height = h;
+	g_resize = false;
+	glfwSetWindowSizeCallback(&g_resize_cb);
 }
 
 void CoreMgr::run()
@@ -96,6 +113,12 @@ void CoreMgr::run()
 
 	while(guiMgr->isWindowOpen())
 	{
+		if(g_resize)
+		{
+			scene->reshape(g_width, g_height);
+			g_resize = false;
+		}
+
 		scene->display();
 		guiMgr->swapBuffers();
 	}
