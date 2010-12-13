@@ -125,6 +125,7 @@ void CoreMgr::run()
 			scene->reshape(g_width, g_height);
 			g_resize = false;
 		}
+		workThreadMgr->update(1.0f);
 
 		scene->display();
 		guiMgr->swapBuffers();

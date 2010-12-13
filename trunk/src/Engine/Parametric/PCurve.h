@@ -16,23 +16,23 @@ class CoreMgr;
 class PCurveEvalData : public WorkData
 {
 public:
-	GMlib::DVector< GMlib::Vector<float, 3> > p;
+	GMlib::DVector< GMlib::Vector<float, 3> > &p;
 	float t;
 	int d;
 	bool l;
-	PCurveEvalData(const GMlib::DVector< GMlib::Vector<float, 3> >& p, float t, int d, bool l)
+	PCurveEvalData(GMlib::DVector< GMlib::Vector<float, 3> > &p, float t, int d, bool l)
 		: p(p), t(t), d(d), l(l) {}
 };
 
 class PCurveEvalDoneData : public WorkDoneData
 {
 public:
-	GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> > > p;
+	GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> > > *p;
 	int m;
 	int d;
 	float start;
 	float end;
-	PCurveEvalDoneData(const GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> > >& p, int m, int d, float start, float end)
+	PCurveEvalDoneData(GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> > > *p, int m, int d, float start, float end)
 		: p(p), m(m), d(d), start(start), end(end) {}
 };
 
@@ -75,10 +75,10 @@ public:
 	virtual void preSample( int m, int d, float s =0.0f, float e = 0.0f );
 	virtual void replot( int m = 0, int d = 2 );
 
-	void postReplot(GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> > >& p, int m = 0, int d = 2 );
+	void postReplot(GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> > > *p, int m = 0, int d = 2 );
 	
-	void genResampleWork(GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> > >& p, int m, int d, float start, float end);
-	void postResampleWorkDone(GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> > >& p, int m, int d, float start, float end);
+	void genResampleWork(GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> > > *p, int m, int d, float start, float end);
+	void postResampleWorkDone(GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> > > *p, int m, int d, float start, float end);
 	
 	//virtual void resample( GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> > >& p, int m, int d, float start, float end );
 	
@@ -128,7 +128,7 @@ protected:
 
 private:
 	void _eval(GMlib::DVector< GMlib::Vector<float, 3> >& p, float t, int d );
-	void _evalDerDD( GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> > > & p, int d, float du ) const;
+	void _evalDerDD( GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> > > *p, int d, float du ) const;
 	float _integral(float a, float b, double eps) { return 1.0f; }
 	CoreMgr *coreMgr;
 };
