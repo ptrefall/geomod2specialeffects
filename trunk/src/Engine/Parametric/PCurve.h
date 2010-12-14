@@ -22,12 +22,12 @@ public:
 	float t;
 	int d;
 	bool l;
-	bool done;
+	volatile bool handled;
 	PCurveEvalData(WorkProducer *producer, unsigned int index, GMlib::DVector< GMlib::Vector<float, 3> > &p, float t, int d, bool l)
-		: producer(producer), index(index), p(p), t(t), d(d), l(l), done(false) {}
+		: producer(producer), index(index), p(p), t(t), d(d), l(l), handled(false) {}
 
-	virtual void handle() { producer->handle(this); done = true; }
-	virtual bool isHandled() { return done; }
+	virtual void handle() { handled = true; producer->handle(this); }
+	virtual bool isHandled() { return handled; }
 };
 
 class PCurveEvalDoneData : public WorkDoneData
