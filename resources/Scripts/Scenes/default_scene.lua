@@ -24,7 +24,7 @@ function Scene:Init()
 	bezier:SetControlPoint({x=-10.0, y=-10.0, z=0.0})
 	bezier:SetControlPoint({x=0.0, y=-10.0, z=0.0})
 	AddToScene(bezier)
-	bezier:Replot(150000)
+	bezier:Replot(10000)
 	
 end
 

@@ -324,6 +324,7 @@ void PCurve::genResampleWork(GMlib::DVector< GMlib::DVector< GMlib::Vector<float
 	float du = (end-start)/(m-1);
 	p->setDim(m);
 
+#if 0
 	//Generate jobs for worker threads here instead
 	//of calling eval directly in a linear fassion...
 	std::vector<WorkData*> work_group;
@@ -331,17 +332,24 @@ void PCurve::genResampleWork(GMlib::DVector< GMlib::DVector< GMlib::Vector<float
 	{
 		PCurveEvalData *evalData = new PCurveEvalData(this, work_group.size(), (*p)[i], start + i * d, d, true);
 		work_group.push_back(evalData);
-
-		//eval(p[i], start + i * du, d, true);
-		//p[i] = _p;
 	}
 	PCurveEvalData *evalData = new PCurveEvalData(this, work_group.size(), (*p)[m-1], end, d, true);
 	work_group.push_back(evalData);
 
 	PCurveEvalDoneData *evalDoneData = new PCurveEvalDoneData(this, p, m,d, start,end);
 	coreMgr->getWorkThreadMgr()->addWorkGroup(this, work_group, evalDoneData);
-	//eval( end, d, true );
-	//p[m-1] = _p;
+
+#endif
+#if 1
+	for( int i = 0; i < m - 1; i++ ) 
+	{
+		eval((*p)[i], start + i * du, d, true);
+	}
+	PCurveEvalDoneData *evalDoneData = new PCurveEvalDoneData(this, p, m,d, start,end);
+	eval((*p)[m-1], end, d, true );
+
+	finished(evalDoneData);
+#endif
 }
 
 void PCurve::postResampleWorkDone(GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> > > *p, int m, int d, float start, float end)
