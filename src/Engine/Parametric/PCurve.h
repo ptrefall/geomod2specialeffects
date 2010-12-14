@@ -84,10 +84,10 @@ public:
 	virtual void preSample( int m, int d, float s =0.0f, float e = 0.0f );
 	virtual void replot( int m = 0, int d = 2 );
 
-	void postReplot(GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> > > *p, int m = 0, int d = 2 );
+	void postReplot(int m = 0, int d = 2 );
 	
-	void genResampleWork(GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> > > *p, int m, int d, float start, float end);
-	void postResampleWorkDone(GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> > > *p, int m, int d, float start, float end);
+	void genResampleWork(int m, int d, float start, float end);
+	void postResampleWorkDone(int m, int d, float start, float end);
 	
 	//virtual void resample( GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> > >& p, int m, int d, float start, float end );
 	
@@ -99,7 +99,7 @@ public:
 	
 	void setNoDer( int d );
 	
-	virtual void setSurroundingSphere( const GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> > >& p );
+	virtual void setSurroundingSphere();
 	
 	void toggleDefaultVisualizer();
 
@@ -110,6 +110,8 @@ public:
 protected:
 	GMlib::Array<GMlib::PCurveVisualizer<float>*> _pcurve_visualizers;
 	GMlib::PCurveVisualizer<float> *_default_visualizer;
+
+	GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> > > *p;
 
 	int _no_sam;      // Number of samples for single sampling
 	int _no_der;      // Number of derivatives
@@ -137,7 +139,7 @@ protected:
 
 private:
 	void _eval(GMlib::DVector< GMlib::Vector<float, 3> >& p, float t, int d );
-	void _evalDerDD( GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> > > *p, int d, float du ) const;
+	void _evalDerDD( int d, float du ) const;
 	float _integral(float a, float b, double eps) { return 1.0f; }
 	CoreMgr *coreMgr;
 };
