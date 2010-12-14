@@ -578,6 +578,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\src\Engine\WorkThread\WorkProductionDoneSync.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\Engine\WorkThread\WorkProductionDoneSync.h"
+					>
+				</File>
+				<File
 					RelativePath="..\src\Engine\WorkThread\WorkThreadMgr.cpp"
 					>
 				</File>
