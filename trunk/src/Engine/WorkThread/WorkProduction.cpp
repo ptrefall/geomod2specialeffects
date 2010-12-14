@@ -40,10 +40,10 @@ void WorkProduction::completed(unsigned int index, WorkData *data)
 	
 	finished_work[index] = true;
 	
-	if(num_finished.get() == work.size())
+	if((unsigned int)num_finished.get() >= work.size())
 	{
 		done = true;
-		doneData->handle();
+		//doneData->handle();
 		CL_Console::write_line("Work Finished!");
 	}
 }

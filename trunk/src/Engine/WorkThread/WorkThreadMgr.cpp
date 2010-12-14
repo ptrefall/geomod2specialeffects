@@ -1,7 +1,6 @@
 #include "precomp.h"
 #include "WorkThreadMgr.h"
 #include "WorkProduction.h"
-#include "Worker.h"
 #include "WorkProducer.h"
 #include "WorkData.h"
 
@@ -54,6 +53,38 @@ WorkThreadMgr::~WorkThreadMgr()
 		{
 			delete work_queue[i];
 			work_queue[i] = 0;
+		}
+	}
+}
+
+void WorkThreadMgr::addWorkGroup(WorkProducer *producer, std::vector<WorkData*> work_group, WorkDoneData *doneData)
+{
+	WorkProduction *production = new WorkProduction(producer, work_group, doneData);
+	produce[producer] = production;
+	producer->insertProduction(production);
+
+	//Queue work
+	CL_Console::write_line(cl_format("Filling work queue with %1 jobs", work_group.size()));
+	for(unsigned int i = 0; i < work_group.size(); i++)
+	{
+		queue(work_group[i]);
+	}
+	CL_Console::write_line("Finished filling work queue with jobs");
+}
+
+void WorkThreadMgr::update(float dt)
+{
+	std::map<WorkProducer*, WorkProduction*>::iterator it = produce.begin();
+	for(; it != produce.end(); ++it)
+	{
+		volatile bool done = false;
+		{
+			compiler_barrier();
+			done = it->second->isDone();
+		}
+		if(done)
+		{
+			it->first->finished(it->second->getDoneData());
 		}
 	}
 }
@@ -194,18 +225,5 @@ void WorkThreadMgr::process_work(unsigned int core)
 			}
 		}
 		worker_active[core].set(0);
-	}
-}
-
-void WorkThreadMgr::addWorkGroup(WorkProducer *producer, std::vector<WorkData*> work_group, WorkDoneData *doneData)
-{
-	WorkProduction *production = new WorkProduction(producer, work_group, doneData);
-	produce[producer] = production;
-	producer->insertProduction(production);
-
-	//Queue work
-	for(unsigned int i = 0; i < work_group.size(); i++)
-	{
-		queue(work_group[i]);
 	}
 }
