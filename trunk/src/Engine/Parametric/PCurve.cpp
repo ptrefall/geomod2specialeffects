@@ -6,7 +6,7 @@
 using namespace Engine;
 
 PCurve::PCurve(CoreMgr *coreMgr, int s ) 
-: coreMgr(coreMgr)
+: coreMgr(coreMgr), p(NULL)
 {
 	_no_sam           = s;
 	_no_der           = 1;
@@ -35,11 +35,12 @@ void PCurve::_eval( GMlib::DVector< GMlib::Vector<float, 3> >& p, float t, int d
 	if( !(d <=_d &&  t ==_t) ) 
 	{
 		_t = t; _d = d;
-		eval( p, shift(t), d );
+		
+		eval(p, shift(t), d );
 	}
 }
 
-void PCurve::_evalDerDD( GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> > > *p, int d, float du ) const 
+void PCurve::_evalDerDD( int d, float du ) const 
 {
 	float one_over_du = 1.0f / du;
 	float one_over_2du = 1.0f / ( 2.0f * du );
@@ -92,44 +93,44 @@ else
 
 GMlib::DVector<GMlib::Vector<float,3> > PCurve::evaluate( float t, int d ) 
 {
-	GMlib::DVector< GMlib::Vector<float, 3> > p;
-	_eval(p, t,d);
-	return p;
+	GMlib::DVector< GMlib::Vector<float, 3> > _p;
+	_eval(_p, t,d);
+	return _p;
 }
 
 GMlib::DVector<GMlib::Vector<float,3> >& PCurve::evaluateGlobal( float t, int d ) 
 {
-	static GMlib::DVector< GMlib::Vector<float,3> > p;
-	p.setDim(d+1);
-	_eval(p,t,d);
+	static GMlib::DVector< GMlib::Vector<float,3> > _p;
+	_p.setDim(d+1);
+	_eval(_p,t,d);
 
-	p[0] = this->_present*((GMlib::Point<float,3>)p[0]);
+	_p[0] = this->_present*((GMlib::Point<float,3>)_p[0]);
 
 	for( int i = 1; i <= d; i++ )
-		p[i] = this->_present * (GMlib::Vector<float,3>)p[i];
+		_p[i] = this->_present * (GMlib::Vector<float,3>)_p[i];
 
-	return p;
+	return _p;
 }
 
 GMlib::DVector<GMlib::Vector<float,3> >& PCurve::evaluateParent( float t, int d ) 
 {
-	static GMlib::DVector< GMlib::Vector<float,3> > p;
-	p.setDim(d+1);
-	_eval(p, t,d);
+	static GMlib::DVector< GMlib::Vector<float,3> > _p;
+	_p.setDim(d+1);
+	_eval(_p, t,d);
 
-	p[0] = this->_matrix*((GMlib::Point<float,3>)p[0]);
+	_p[0] = this->_matrix*((GMlib::Point<float,3>)_p[0]);
 
 	for( int i = 1; i <= d; i++ )
-		p[i] = this->_matrix * (GMlib::Vector<float,3>)p[i];
+		_p[i] = this->_matrix * (GMlib::Vector<float,3>)_p[i];
 
-	return p;
+	return _p;
 }
 
 float PCurve::getCurvature( float t ) 
 {
-	GMlib::DVector< GMlib::Vector<float,3> > p;
-	_eval(p, t, 2 );
-	GMlib::Vector<float,3> d1 = p[1];
+	GMlib::DVector< GMlib::Vector<float,3> > _p;
+	_eval(_p, t, 2 );
+	GMlib::Vector<float,3> d1 = _p[1];
 	float a1= d1.getLength();
 
 	if( a1 < float(1.0e-5) )
@@ -137,7 +138,7 @@ float PCurve::getCurvature( float t )
 
 	d1 /= a1;
 
-	GMlib::Vector<float,3> d2 = ( p[2] - ( d1 * p[2] ) * d1 ) / ( a1 * a1 );
+	GMlib::Vector<float,3> d2 = ( _p[2] - ( d1 * _p[2] ) * d1 ) / ( a1 * a1 );
 
 	return d2.getLength();
 }
@@ -160,16 +161,17 @@ int PCurve::getDerivatives() const
 
 GMlib::Vector<float,3> PCurve::getDer1( float t ) 
 {
-	GMlib::DVector< GMlib::Vector<float, 3> > p;
-	eval(p, t, 1 );
-	return p[1];
+	GMlib::DVector< GMlib::Vector<float, 3> > _p;
+	
+	eval(_p, t, 1 );
+	return _p[1];
 }
 
 GMlib::Vector<float,3> PCurve::getDer2(float t ) 
 {
-	GMlib::DVector< GMlib::Vector<float, 3> > p;
-	_eval(p,t,2);
-	return p[2];
+	GMlib::DVector< GMlib::Vector<float, 3> > _p;
+	_eval(_p,t,2);
+	return _p[2];
 }
 
 std::string PCurve::getIdentity() const 
@@ -266,28 +268,20 @@ void PCurve::replot( int m, int d )
 	preSample( m, 1, getStartP(), getEndP() );
 
 	// Resample
-	GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> > > *p = new GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> > >();
+	if(p)
+		delete p;
+	p = new GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> > >();
 	
 	/////////////////////////////////
 	// MULTITHREADING EDIT!
 	/////////////////////////////////
-	
-	//resample( p, m, 1, getStartP(), getEndP() );
-
-	genResampleWork(p, m, 1, getStartP(), getEndP());
-
-	/*// Set The Surrounding Sphere
-	setSurroundingSphere( p );
-
-	// Replot Visaulizers
-	for( int i = 0; i < this->_pcurve_visualizers.getSize(); i++ )
-		this->_pcurve_visualizers[i]->replot( p, m, d );*/
+	genResampleWork(m, 1, getStartP(), getEndP());
 }
 
-void PCurve::postReplot(GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> > > *p, int m, int d)
+void PCurve::postReplot(int m, int d)
 {
 	// Set The Surrounding Sphere
-	setSurroundingSphere( *p );
+	setSurroundingSphere();
 
 	// Replot Visaulizers
 	for( int i = 0; i < this->_pcurve_visualizers.getSize(); i++ )
@@ -300,8 +294,8 @@ void PCurve::postReplot(GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> 
 void PCurve::finished(WorkDoneData *data)
 {
 	PCurveEvalDoneData *evalData = static_cast<PCurveEvalDoneData*>(data);
-	postResampleWorkDone(evalData->p, evalData->m, evalData->d, evalData->start, evalData->end);
-	postReplot(evalData->p, evalData->m, evalData->d);
+	postResampleWorkDone(evalData->m, evalData->d, evalData->start, evalData->end);
+	postReplot(evalData->m, evalData->d);
 	CL_Console::write_line("Finished replotting PCurve");
 }
 
@@ -319,12 +313,12 @@ void PCurve::removeVisualizer( GMlib::Visualizer* visualizer )
 //// REWRITTEN TO MULTITHREADING
 ////
 ////////////////////////////////////
-void PCurve::genResampleWork(GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> > > *p, int m, int d, float start, float end)
+void PCurve::genResampleWork(int m, int d, float start, float end)
 {
 	float du = (end-start)/(m-1);
 	p->setDim(m);
 
-#if 0
+#if 1
 	//Generate jobs for worker threads here instead
 	//of calling eval directly in a linear fassion...
 	std::vector<WorkData*> work_group;
@@ -340,7 +334,7 @@ void PCurve::genResampleWork(GMlib::DVector< GMlib::DVector< GMlib::Vector<float
 	coreMgr->getWorkThreadMgr()->addWorkGroup(this, work_group, evalDoneData);
 
 #endif
-#if 1
+#if 0
 	for( int i = 0; i < m - 1; i++ ) 
 	{
 		eval((*p)[i], start + i * du, d, true);
@@ -352,7 +346,7 @@ void PCurve::genResampleWork(GMlib::DVector< GMlib::DVector< GMlib::Vector<float
 #endif
 }
 
-void PCurve::postResampleWorkDone(GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> > > *p, int m, int d, float start, float end)
+void PCurve::postResampleWorkDone(int m, int d, float start, float end)
 {
 	switch( this->_dm ) 
 	{
@@ -365,41 +359,10 @@ void PCurve::postResampleWorkDone(GMlib::DVector< GMlib::DVector< GMlib::Vector<
 	case GMlib::GM_DERIVATION_DD:
 	default:
 			float du = (end-start)/(m-1);
-			_evalDerDD( p, d, du );
+			_evalDerDD( d, du );
 		break;
 	};
 }
-
-/*void PCurve::resample( GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> > >& p, int m, int d, float start, float end )
-{
-	float du = (end-start)/(m-1);
-	p.setDim(m);
-
-	//Generate jobs for worker threads here instead
-	//of calling eval directly in a linear fassion...
-	for( int i = 0; i < m - 1; i++ ) 
-	{
-		eval( start + i * du, d, true);
-		p[i] = _p;
-	}
-	eval( end, d, true );
-	p[m-1] = _p;
-
-
-	switch( this->_dm ) 
-	{
-	case GMlib::GM_DERIVATION_EXPLICIT:
-		// Do nothing, evaluator algorithms for explicite calculation of derivatives
-		// should be defined in the eval( ... ) function enclosed by
-		// if( this->_derivation_method == this->EXPLICIT ) { ... eval algorithms for derivatives ... }
-		break;
-
-	case GMlib::GM_DERIVATION_DD:
-	default:
-			_evalDerDD( p, d, du );
-		break;
-	};
-}*/
 
 void PCurve::setDomain(float start, float end) 
 {
@@ -427,13 +390,13 @@ void PCurve::setNoDer( int d )
 	_defalt_d = d;
 }
 
-void PCurve::setSurroundingSphere( const GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> > >& p )
+void PCurve::setSurroundingSphere()
 {
 	GMlib::Sphere<float,3>  s;
-	s.resetPos( GMlib::Point<float,3>( p(0)(0) ) );
-	s += GMlib::Point<float,3>( p(p.getDim() - 1)(0) );
-	for( int i = p.getDim() - 2; i > 0; i-- )
-	s += GMlib::Point<float,3>( p(i)(0) );
+	s.resetPos( GMlib::Point<float,3>( (*p)(0)(0) ) );
+	s += GMlib::Point<float,3>( (*p)((*p).getDim() - 1)(0) );
+	for( int i = (*p).getDim() - 2; i > 0; i-- )
+		s += GMlib::Point<float,3>( (*p)(i)(0) );
 	GMlib::Parametrics<float,1>::setSurroundingSphere(s);
 }
 
@@ -452,7 +415,7 @@ void PCurve::toggleDefaultVisualizer()
 
 GMlib::Point<float,3> PCurve::operator()( float t )
 {
-	GMlib::DVector< GMlib::Vector<float, 3> > p;
-	eval(p, t, _defalt_d );
-	return ( GMlib::Point<float,3> ) p[0];
+	GMlib::DVector< GMlib::Vector<float, 3> > _p;
+	eval(_p, t, _defalt_d );
+	return ( GMlib::Point<float,3> ) _p[0];
 }

@@ -29,7 +29,9 @@ WorkThreadMgr::WorkThreadMgr(CoreMgr *coreMgr)
 	work_queue.resize(queue_max, 0);
 
 	for(unsigned int core = 0; core < active_cores; core++)
+	{
 		event_more_work.push_back(CL_Event());
+	}
 
 	CL_Console::write_line(cl_format("Spawning %1 worker threads", active_cores));
 	for(unsigned int core = 0; core < active_cores; core++)
@@ -46,7 +48,9 @@ WorkThreadMgr::~WorkThreadMgr()
 	event_stop.set();
 
 	for(unsigned int core = 0; core < worker_threads.size(); core++)
+	{
 		worker_threads[core].join();
+	}
 
 	for(unsigned int i = 0; i < queue_max; i++)
 	{
@@ -225,7 +229,6 @@ void WorkThreadMgr::process_work(unsigned int core)
 				if(handled == false)
 				{
 					data->handle();
-					//CL_Console::write(".");
 				}
 
 				worker_index++;

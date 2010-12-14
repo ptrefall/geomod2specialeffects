@@ -31,19 +31,3 @@ WorkProduction::WorkProduction(WorkProducer *producer, const std::vector<WorkDat
 WorkProduction::~WorkProduction()
 {
 }
-
-void WorkProduction::completed(unsigned int index, WorkData *data) 
-{ 
-	compiler_barrier();
-	local_num_finished++;
-	num_finished.set(local_num_finished);
-	
-	finished_work[index] = true;
-	
-	if((unsigned int)num_finished.get() >= work.size())
-	{
-		done = true;
-		//doneData->handle();
-		CL_Console::write_line("Work Finished!");
-	}
-}

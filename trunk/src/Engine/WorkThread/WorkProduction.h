@@ -17,8 +17,6 @@ namespace Engine
 		unsigned int getWorkDataSize() const { return work.size(); }
 		unsigned int getNumFinished() const { return num_finished.get(); }
 
-		void completed(unsigned int index, WorkData *data);
-
 	private:
 		std::vector<WorkData*> work;
 		std::vector<bool> finished_work;

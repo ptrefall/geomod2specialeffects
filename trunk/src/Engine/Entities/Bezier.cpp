@@ -43,14 +43,15 @@ Bezier::~Bezier()
 void Bezier::handle(WorkData *data)
 {
 	PCurveEvalData *evalData = static_cast<PCurveEvalData*>(data);
+	if(evalData->index == 9998)
+	{
+		CL_Console::write_line("Bugs in MT!");
+	}
 	eval(evalData->p, evalData->t, evalData->d, evalData->l);
 }
 
 void Bezier::eval(GMlib::DVector< GMlib::Vector<float, 3> >& _p, float t, int d, bool l)
 {
-	//Send out an event that we're evaluating the bezier curve! Never know if any component logic would want to know ;)
-	//this->ExecuteEventOnComponents(Events::Event("Eval", Events::EventValue(t), Events::EventValue(d), Events::EventValue(l)));
-
 	_p.setDim(resultSet_dim.Get()+1);
 	
 	GMlib::DMatrix<float> bernHermMat;
