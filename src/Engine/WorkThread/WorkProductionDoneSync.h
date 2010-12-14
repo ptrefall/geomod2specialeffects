@@ -12,8 +12,8 @@ namespace Engine
 		
 		void worker_done()
 		{
-			//if (done_jobs.increment() == num_jobs)
-			done_event.set();
+			if (done_jobs.increment() == num_jobs)
+				done_event.set(); //Only fire even once every worker is finished
 		}
 
 		bool is_done() const
@@ -23,7 +23,7 @@ namespace Engine
 
 		CL_Event done_event;
 
-		virtual void handle() { worker_done(); handled = true; }
+		virtual void handle() { worker_done(); }
 		virtual bool isHandled() { return handled; }
 	private:
 		int num_jobs;
