@@ -40,8 +40,9 @@ namespace Engine
 		std::vector<CL_Event> event_more_work;
 		CL_Event event_worker_done;
 		CL_Event event_stop;
+		CL_Event event_job_done;
 
-		enum { queue_max = 100000, work_threshold = 64 };
+		enum { queue_max = 200000, work_threshold = 64 };
 		int local_queue_index;
 		int local_worker_index;
 		int local_work_queued;

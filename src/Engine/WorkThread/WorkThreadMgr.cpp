@@ -3,6 +3,7 @@
 #include "WorkProduction.h"
 #include "WorkProducer.h"
 #include "WorkData.h"
+#include "WorkProductionDoneSync.h"
 
 using namespace Engine;
 
@@ -69,7 +70,16 @@ void WorkThreadMgr::addWorkGroup(WorkProducer *producer, std::vector<WorkData*> 
 	{
 		queue(work_group[i]);
 	}
+	
+	WorkProductionDoneSync *syncJobDone = new WorkProductionDoneSync(work_group.size());
+	event_job_done = syncJobDone->done_event;
+	queue(syncJobDone);
+	
 	CL_Console::write_line("Finished filling work queue with jobs");
+
+	event_job_done.wait();
+	event_job_done.reset();
+	CL_Console::write_line("Job finished!");
 }
 
 void WorkThreadMgr::update(float dt)
@@ -201,16 +211,20 @@ void WorkThreadMgr::process_work(unsigned int core)
 				// HANDLE WORK DATA
 				WorkData *data = work_queue[worker_index];
 				if(data == 0)
-					return;
-
-				if(data->isHandled())
+				{
+					//continue;
+				}
+				else if(data->isHandled())
 				{
 					CL_Console::write_line("Tried to handle data that has already been handled!");
-					return;
+					//continue;
 				}
-				data->handle();
-				work_queue[worker_index] = 0;
-				CL_Console::write(".");
+				else
+				{
+					data->handle();
+					work_queue[worker_index] = 0;
+					//CL_Console::write(".");
+				}
 
 				worker_index++;
 				if (worker_index == queue_max)
