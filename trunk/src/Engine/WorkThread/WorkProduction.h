@@ -4,34 +4,32 @@ namespace Engine
 {
 	class WorkData;
 	class WorkDoneData;
+	class WorkProducer;
 	class WorkProduction
 	{
 	public:
-		WorkProduction(const std::vector<WorkData*> &work, WorkDoneData *doneData);
+		WorkProduction(WorkProducer *producer, const std::vector<WorkData*> &work, WorkDoneData *doneData);
 		virtual ~WorkProduction();
 
 		bool isDone() const { return done; }
 		WorkDoneData * getDoneData() const { return doneData; }
 		WorkData *getWorkData(unsigned int i) { return work[i]; }
 		unsigned int getWorkDataSize() const { return work.size(); }
-		bool isUnderWork(unsigned int i) { return under_work[i]; }
-		void setUnderWork(unsigned int i) { under_work[i] = true; }
-		void setFinishedWork(unsigned int i) 
-		{ 
-			numFinished++; 
-			finished_work[i] = true; 
-			if(numFinished == work.size())
-			{
-				done = true;
-			}
-		}
+		unsigned int getNumFinished() const { return num_finished.get(); }
+
+		void completed(unsigned int index, WorkData *data);
 
 	private:
-		volatile bool done;
 		std::vector<WorkData*> work;
-		std::vector<bool> under_work;
 		std::vector<bool> finished_work;
-		unsigned int numFinished;
+		
 		WorkDoneData *doneData;
+		WorkProducer *producer;
+
+		volatile unsigned int local_num_finished;
+		CL_InterlockedVariable num_finished;
+		CL_InterlockedVariable num_work;
+		volatile bool done;
+		
 	};
 }

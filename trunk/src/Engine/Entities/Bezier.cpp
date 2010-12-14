@@ -2,6 +2,7 @@
 #include "Bezier.h"
 #include <Event/Event.h>
 #include <Event/EventValue.h>
+#include <WorkThread/WorkProduction.h>
 
 using namespace Engine;
 
@@ -43,6 +44,7 @@ void Bezier::handle(WorkData *data)
 {
 	PCurveEvalData *evalData = static_cast<PCurveEvalData*>(data);
 	eval(evalData->p, evalData->t, evalData->d, evalData->l);
+	this->getProduction()->completed(evalData->index, data);
 }
 
 void Bezier::eval(GMlib::DVector< GMlib::Vector<float, 3> >& _p, float t, int d, bool l)

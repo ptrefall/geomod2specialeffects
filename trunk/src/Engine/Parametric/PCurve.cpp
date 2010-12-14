@@ -329,16 +329,16 @@ void PCurve::genResampleWork(GMlib::DVector< GMlib::DVector< GMlib::Vector<float
 	std::vector<WorkData*> work_group;
 	for( int i = 0; i < m - 1; i++ ) 
 	{
-		PCurveEvalData *evalData = new PCurveEvalData((*p)[i], start + i * d, d, true);
+		PCurveEvalData *evalData = new PCurveEvalData(this, work_group.size(), (*p)[i], start + i * d, d, true);
 		work_group.push_back(evalData);
 
 		//eval(p[i], start + i * du, d, true);
 		//p[i] = _p;
 	}
-	PCurveEvalData *evalData = new PCurveEvalData((*p)[m-1], end, d, true);
+	PCurveEvalData *evalData = new PCurveEvalData(this, work_group.size(), (*p)[m-1], end, d, true);
 	work_group.push_back(evalData);
 
-	PCurveEvalDoneData *evalDoneData = new PCurveEvalDoneData(p, m,d, start,end);
+	PCurveEvalDoneData *evalDoneData = new PCurveEvalDoneData(this, p, m,d, start,end);
 	coreMgr->getWorkThreadMgr()->addWorkGroup(this, work_group, evalDoneData);
 	//eval( end, d, true );
 	//p[m-1] = _p;

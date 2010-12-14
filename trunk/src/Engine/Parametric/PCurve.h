@@ -16,24 +16,31 @@ class CoreMgr;
 class PCurveEvalData : public WorkData
 {
 public:
+	WorkProducer *producer;
+	unsigned int index;
 	GMlib::DVector< GMlib::Vector<float, 3> > &p;
 	float t;
 	int d;
 	bool l;
-	PCurveEvalData(GMlib::DVector< GMlib::Vector<float, 3> > &p, float t, int d, bool l)
-		: p(p), t(t), d(d), l(l) {}
+	PCurveEvalData(WorkProducer *producer, unsigned int index, GMlib::DVector< GMlib::Vector<float, 3> > &p, float t, int d, bool l)
+		: producer(producer), index(index), p(p), t(t), d(d), l(l) {}
+
+	virtual void handle() { producer->handle(this); }
 };
 
 class PCurveEvalDoneData : public WorkDoneData
 {
 public:
+	WorkProducer *producer;
 	GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> > > *p;
 	int m;
 	int d;
 	float start;
 	float end;
-	PCurveEvalDoneData(GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> > > *p, int m, int d, float start, float end)
-		: p(p), m(m), d(d), start(start), end(end) {}
+	PCurveEvalDoneData(WorkProducer *producer, GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> > > *p, int m, int d, float start, float end)
+		: producer(producer), p(p), m(m), d(d), start(start), end(end) {}
+
+	virtual void handle() { producer->finished(this); }
 };
 
 class PCurve : public GMlib::Parametrics<float,1>, public WorkProducer

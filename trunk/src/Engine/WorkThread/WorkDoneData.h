@@ -7,5 +7,7 @@ namespace Engine
 	public:
 		WorkDoneData();
 		virtual ~WorkDoneData();
+
+		virtual void handle() = 0;
 	};
 }

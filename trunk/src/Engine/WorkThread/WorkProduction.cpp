@@ -1,21 +1,49 @@
 #include "precomp.h"
 #include "WorkProduction.h"
+#include "WorkDoneData.h"
 
 using namespace Engine;
 
-WorkProduction::WorkProduction(const std::vector<WorkData*> &work, WorkDoneData *doneData)
-: done(false), numFinished(0)
+#ifdef _MSC_VER
+	#include <intrin.h>
+	#ifndef compiler_barrier
+		#define compiler_barrier() _ReadWriteBarrier()
+	#endif
+#else
+	#ifndef compiler_barrier
+		#define compiler_barrier()  __asm__ __volatile__("" : : : "memory")
+	#endif
+#endif
+
+WorkProduction::WorkProduction(WorkProducer *producer, const std::vector<WorkData*> &work, WorkDoneData *doneData)
+: done(false), local_num_finished(0)
 {
+	this->producer = producer;
 	this->work = work;
 	this->doneData = doneData;
 
-	for(unsigned int i = 0; i < this->work.size(); i++)
-	{
-		under_work.push_back(false);
-		finished_work.push_back(false);
-	}
+	finished_work.resize(work.size(), false);
+
+	compiler_barrier();
+	num_work.set(work.size());
 }
 
 WorkProduction::~WorkProduction()
 {
+}
+
+void WorkProduction::completed(unsigned int index, WorkData *data) 
+{ 
+	compiler_barrier();
+	local_num_finished++;
+	num_finished.set(local_num_finished);
+	
+	finished_work[index] = true;
+	
+	if(num_finished.get() == work.size())
+	{
+		done = true;
+		doneData->handle();
+		CL_Console::write_line("Work Finished!");
+	}
 }
