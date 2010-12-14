@@ -22,6 +22,7 @@ namespace Engine
 
 		void finishedWork(WorkProducer *producer, unsigned int index);
 
+		void update(float dt);
 	private:
 		void worker_main(unsigned int core);
 		void process_work(unsigned int core);
@@ -36,7 +37,6 @@ namespace Engine
 
 		unsigned int active_cores;
 		std::vector<CL_Thread> worker_threads;
-		//std::vector<Worker*> workers;
 		std::vector<CL_Event> event_more_work;
 		CL_Event event_worker_done;
 		CL_Event event_stop;
