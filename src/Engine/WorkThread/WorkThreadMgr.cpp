@@ -60,6 +60,7 @@ WorkThreadMgr::~WorkThreadMgr()
 
 void WorkThreadMgr::addWorkGroup(WorkProducer *producer, std::vector<WorkData*> work_group, WorkDoneData *doneData)
 {
+	waiting_for_job_done = true;
 	WorkProduction *production = new WorkProduction(producer, work_group, doneData);
 	produce[producer] = production;
 	producer->insertProduction(production);
@@ -71,32 +72,36 @@ void WorkThreadMgr::addWorkGroup(WorkProducer *producer, std::vector<WorkData*> 
 		queue(work_group[i]);
 	}
 	
-	WorkProductionDoneSync *syncJobDone = new WorkProductionDoneSync(work_group.size());
-	event_job_done = syncJobDone->done_event;
+	WorkProductionDoneSync *syncJobDone = new WorkProductionDoneSync(producer, active_cores);
+	jobDoneSync.push_back(syncJobDone);
+	event_jobDoneSync.push_back(syncJobDone->done_event);
 	queue(syncJobDone);
 	
 	CL_Console::write_line("Finished filling work queue with jobs");
 
-	event_job_done.wait();
-	event_job_done.reset();
-	CL_Console::write_line("Job finished!");
-
-	producer->finished(doneData);
+	int wakeup_reason = CL_Event::wait(event_jobDoneSync, 100);
+	if(wakeup_reason >= 0)
+	{
+		event_jobDoneSync[wakeup_reason].reset();
+		CL_Console::write_line("Job finished!");
+		jobDoneSync[wakeup_reason]->getProducer()->finished(doneData);
+		waiting_for_job_done = false;
+	}
 }
 
 void WorkThreadMgr::update(float dt)
 {
-	std::map<WorkProducer*, WorkProduction*>::iterator it = produce.begin();
-	for(; it != produce.end(); ++it)
+	if(waiting_for_job_done)
 	{
-		volatile bool done = false;
+		int wakeup_reason = CL_Event::wait(event_jobDoneSync, 100);
+		if(wakeup_reason >= 0)
 		{
-			compiler_barrier();
-			done = it->second->isDone();
-		}
-		if(done)
-		{
-			it->first->finished(it->second->getDoneData());
+			event_jobDoneSync[wakeup_reason].reset();
+			CL_Console::write_line("Job finished!");
+			WorkProducer *producer = jobDoneSync[wakeup_reason]->getProducer();
+			WorkProduction *production = producer->getProduction();
+			producer->finished(production->getDoneData());
+			waiting_for_job_done = false;
 		}
 	}
 }
