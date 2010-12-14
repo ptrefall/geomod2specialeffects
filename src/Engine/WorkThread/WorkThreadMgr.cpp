@@ -3,108 +3,209 @@
 #include "WorkProduction.h"
 #include "Worker.h"
 #include "WorkProducer.h"
+#include "WorkData.h"
 
 using namespace Engine;
 
+#ifdef _MSC_VER
+	#include <intrin.h>
+	#ifndef compiler_barrier
+		#define compiler_barrier() _ReadWriteBarrier()
+	#endif
+#else
+	#ifndef compiler_barrier
+		#define compiler_barrier()  __asm__ __volatile__("" : : : "memory")
+	#endif
+#endif
+
 WorkThreadMgr::WorkThreadMgr(CoreMgr *coreMgr)
-: coreMgr(coreMgr)
+: coreMgr(coreMgr), active_cores(0), local_queue_index(0), local_worker_index(0), local_work_queued(0)
 {
-	for(unsigned int core = 0; core < (unsigned int)CL_System::get_num_cores(); core++)
+	active_cores = (unsigned int)CL_System::get_num_cores();
+
+	worker_indices.resize(active_cores);
+	worker_active.resize(active_cores);
+
+	work_queue.resize(queue_max, 0);
+
+	for(unsigned int core = 0; core < active_cores; core++)
+		event_more_work.push_back(CL_Event());
+
+	CL_Console::write_line(cl_format("Spawning %1 worker threads", active_cores));
+	for(unsigned int core = 0; core < active_cores; core++)
 	{
-		work_for_worker.push_back(CL_Event());
-		workers.push_back(new Worker(coreMgr, core, work_for_worker[core]));
+		CL_Thread worker_thread;
+		worker_thread.start<WorkThreadMgr, unsigned int>(this, &WorkThreadMgr::worker_main, core);
+		worker_threads.push_back(worker_thread);
 	}
 }
 
 WorkThreadMgr::~WorkThreadMgr()
 {
-}
+	wait_for_workers();
+	event_stop.set();
 
-void WorkThreadMgr::update(float dt)
-{
-	assignWork();
-}
+	for(unsigned int core = 0; core < worker_threads.size(); core++)
+		worker_threads[core].join();
 
-bool WorkThreadMgr::isWorkGroupCompletedFor(WorkProducer *producer)
-{
-	std::map<WorkProducer*, WorkProduction*>::iterator it = produce.find(producer);
-	if(it == produce.end())
-		return false;
-
-	if(it->second->isDone())
-		return true;
-	else
-		return false;
-}
-
-WorkDoneData *WorkThreadMgr::getWorkGroupDoneData(WorkProducer *producer)
-{
-	std::map<WorkProducer*, WorkProduction*>::iterator it = produce.find(producer);
-	if(it == produce.end())
-		return NULL;
-
-	return it->second->getDoneData();
-}
-
-void WorkThreadMgr::addWorkGroup(WorkProducer *producer, std::vector<WorkData*> work_group, WorkDoneData *doneData)
-{
-	std::map<WorkProducer*, WorkProduction*>::iterator it = produce.find(producer);
-	if(it != produce.end())
-		return;
-
-	produce[producer] = new WorkProduction(work_group, doneData);
-
-	assignWork();
-}
-
-void WorkThreadMgr::assignWork()
-{
-	std::map<WorkProducer*, WorkProduction*>::iterator it = produce.begin();
-	for(; it != produce.end(); ++it)
+	for(unsigned int i = 0; i < queue_max; i++)
 	{
-		if(it->second->isDone())
+		if(work_queue[i] != 0)
 		{
-			it->first->finished(it->second->getDoneData());
-			produce.erase(it);
-			
-			if(produce.empty())
-				return;
-
-			it = produce.begin();
-			continue;
-		}
-
-		for(unsigned int i = 0; i < it->second->getWorkDataSize(); i++)
-		{
-			if(it->second->isUnderWork(i) == false)
-			{
-				int foundWorker = -1;
-				for(unsigned int core = 0; core < workers.size(); core++)
-				{
-					if(workers[core]->isAtWork() == false)
-					{
-						foundWorker = core;
-						break;
-					}
-				}
-
-				if(foundWorker > -1)
-				{
-					it->second->setUnderWork(i);
-					workers[foundWorker]->setToWork(it->first, it->second->getWorkData(i), i);
-					work_for_worker[foundWorker].set();
-					continue;
-				}
-			}
+			delete work_queue[i];
+			work_queue[i] = 0;
 		}
 	}
 }
 
-void WorkThreadMgr::finishedWork(WorkProducer *producer, unsigned int index)
+void WorkThreadMgr::queue(WorkData *data)
 {
-	std::map<WorkProducer*, WorkProduction*>::iterator it = produce.find(producer);
-	if(it == produce.end())
-		throw CL_Exception("Couldn't find producer of finished work!");
+	wait_for_queue_space();
+	work_queue[local_queue_index] = data;
+	
+	local_queue_index++;
+	if(local_queue_index == queue_max)
+		local_queue_index = 0;
+	local_work_queued++;
 
-	it->second->setFinishedWork(index);
+	if(local_work_queued == work_threshold)
+	{
+		compiler_barrier();
+		queue_index.set(local_queue_index);
+		local_work_queued = 0;
+
+		for(unsigned int core = 0; core < active_cores; core++)
+		{
+			if(worker_active[core].get() == 0)
+				event_more_work[core].set();
+		}
+	}
+}
+
+void WorkThreadMgr::wait_for_workers()
+{
+	if (local_work_queued > 0)
+	{
+		compiler_barrier();
+		queue_index.set(local_queue_index);
+		local_work_queued = 0;
+
+		for (unsigned int core = 0; core < active_cores; core++)
+			event_more_work[core].set();
+	}
+
+	if (local_worker_index != local_queue_index)
+	{
+		update_local_worker_index();
+		while (local_worker_index != local_queue_index)
+		{
+			event_worker_done.wait();
+			event_worker_done.reset();
+			update_local_worker_index();
+		}
+	}
+}
+
+void WorkThreadMgr::wait_for_queue_space()
+{
+	int next_index = local_queue_index+1;
+	if (next_index == queue_max)
+		next_index = 0;
+	if (next_index == local_worker_index)
+	{
+		update_local_worker_index();
+		while (next_index == local_worker_index)
+		{
+			event_worker_done.wait();
+			event_worker_done.reset();
+			update_local_worker_index();
+		}
+	}
+}
+
+void WorkThreadMgr::update_local_worker_index()
+{
+	local_worker_index = local_queue_index;
+	for (unsigned int core = 0; core < active_cores; core++)
+	{
+		int worker_index = worker_indices[core].get();
+		if (worker_index > local_queue_index)
+			worker_index -= queue_max;
+		if (worker_index < local_worker_index)
+			local_worker_index = worker_index;
+	}
+	if (local_worker_index < 0)
+		local_worker_index += queue_max;
+}
+
+void WorkThreadMgr::worker_main(unsigned int core)
+{
+	CL_Thread::set_thread_name(cl_format("Worker_%1", core).c_str());
+
+	while(true)
+	{
+		int wakeup_reason = CL_Event::wait(event_more_work[core], event_stop);
+		if(wakeup_reason != 0)
+			break;
+
+		event_more_work[core].reset();
+		process_work(core);
+	}
+}
+
+void WorkThreadMgr::process_work(unsigned int core)
+{
+	while(true)
+	{
+		int worker_index = worker_indices[core].get();
+		int worker_queue_index = queue_index.get();
+		int worker_job_retired = 0;
+		if (worker_index == worker_queue_index)
+			break;
+
+		worker_active[core].set(1);
+		{
+			while (worker_index != worker_queue_index)
+			{
+				// HANDLE WORK DATA
+				WorkData *data = work_queue[worker_index];
+				data->handle();
+
+				worker_index++;
+				if (worker_index == queue_max)
+					worker_index = 0;
+				worker_job_retired++;
+
+				if (worker_job_retired == work_threshold)
+				{
+					compiler_barrier();
+					worker_indices[core].set(worker_index);
+					worker_job_retired = 0;
+					event_worker_done.set();
+				}
+			}
+
+			if (worker_job_retired > 0)
+			{
+				compiler_barrier();
+				worker_indices[core].set(worker_index);
+				worker_job_retired = 0;
+				event_worker_done.set();
+			}
+		}
+		worker_active[core].set(0);
+	}
+}
+
+void WorkThreadMgr::addWorkGroup(WorkProducer *producer, std::vector<WorkData*> work_group, WorkDoneData *doneData)
+{
+	WorkProduction *production = new WorkProduction(producer, work_group, doneData);
+	produce[producer] = production;
+	producer->insertProduction(production);
+
+	//Queue work
+	for(unsigned int i = 0; i < work_group.size(); i++)
+	{
+		queue(work_group[i]);
+	}
 }
