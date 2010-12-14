@@ -5,8 +5,8 @@ namespace Engine
 	class WorkProducer;
 	class WorkProduction;
 	class WorkDoneData;
-	class Worker;
 	class WorkData;
+	class WorkProductionDoneSync;
 
 	class CoreMgr;
 	class WorkThreadMgr
@@ -40,7 +40,6 @@ namespace Engine
 		std::vector<CL_Event> event_more_work;
 		CL_Event event_worker_done;
 		CL_Event event_stop;
-		CL_Event event_job_done;
 
 		enum { queue_max = 200000, work_threshold = 1 };
 		int local_queue_index;
@@ -50,6 +49,10 @@ namespace Engine
 		CL_InterlockedVariable queue_index;
 		std::vector<CL_InterlockedVariable> worker_indices;
 		std::vector<CL_InterlockedVariable> worker_active;
+		
+		std::vector<WorkProductionDoneSync*> jobDoneSync;
+		std::vector<CL_Event> event_jobDoneSync;
+		bool waiting_for_job_done;
 
 		CoreMgr *coreMgr;
 	};

@@ -3,8 +3,8 @@
 
 using namespace Engine;
 
-WorkProductionDoneSync::WorkProductionDoneSync(unsigned int num_jobs)
-: num_jobs(num_jobs), handled(false)
+WorkProductionDoneSync::WorkProductionDoneSync(WorkProducer *producer, int active_cores)
+: producer(producer), active_cores(active_cores), handled(false)
 {
 }
 
