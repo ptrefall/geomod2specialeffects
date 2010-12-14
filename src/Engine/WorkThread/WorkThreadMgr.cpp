@@ -80,6 +80,8 @@ void WorkThreadMgr::addWorkGroup(WorkProducer *producer, std::vector<WorkData*> 
 	event_job_done.wait();
 	event_job_done.reset();
 	CL_Console::write_line("Job finished!");
+
+	producer->finished(doneData);
 }
 
 void WorkThreadMgr::update(float dt)

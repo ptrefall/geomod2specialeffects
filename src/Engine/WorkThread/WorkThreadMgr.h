@@ -42,7 +42,7 @@ namespace Engine
 		CL_Event event_stop;
 		CL_Event event_job_done;
 
-		enum { queue_max = 200000, work_threshold = 64 };
+		enum { queue_max = 200000, work_threshold = 1 };
 		int local_queue_index;
 		int local_worker_index;
 		int local_work_queued;
