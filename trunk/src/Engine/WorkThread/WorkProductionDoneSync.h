@@ -12,8 +12,8 @@ namespace Engine
 		
 		void worker_done()
 		{
-			if (done_jobs.increment() == num_jobs)
-				done_event.set();
+			//if (done_jobs.increment() == num_jobs)
+			done_event.set();
 		}
 
 		bool is_done() const
