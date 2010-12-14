@@ -9,5 +9,6 @@ namespace Engine
 		virtual ~WorkData();
 
 		virtual void handle() = 0;
+		virtual bool isHandled() = 0;
 	};
 }

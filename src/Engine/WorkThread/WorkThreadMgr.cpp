@@ -200,7 +200,17 @@ void WorkThreadMgr::process_work(unsigned int core)
 			{
 				// HANDLE WORK DATA
 				WorkData *data = work_queue[worker_index];
+				if(data == 0)
+					return;
+
+				if(data->isHandled())
+				{
+					CL_Console::write_line("Tried to handle data that has already been handled!");
+					return;
+				}
 				data->handle();
+				work_queue[worker_index] = 0;
+				CL_Console::write(".");
 
 				worker_index++;
 				if (worker_index == queue_max)
