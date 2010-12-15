@@ -15,6 +15,8 @@ public:
 	ComponentFactory *getComponentFactory() const { return compFactory; }
 	IEntity *create(const CL_String &type, const CL_String &name = CL_String());
 
+	void update(float dt);
+
 	unsigned int genUId()
 	{
 		uIds++;

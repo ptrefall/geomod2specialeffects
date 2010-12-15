@@ -6,8 +6,7 @@
 using namespace Engine;
 
 Curve::Curve(unsigned int id, const CL_String &type, const CL_String &name, CoreMgr *coreMgr, ComponentFactory &factory)
-: IEntity(id, type, name, coreMgr, factory), 
-  GMlib::PCurve<float>()
+: IEntity(id, type, name, coreMgr, factory), PCurve(coreMgr), _p(NULL)
 {
 	//Parametric curve properties
 	identity = this->AddProperty<CL_String>("Identity", "Curve");
@@ -36,8 +35,15 @@ Curve::~Curve()
 {
 }
 
-void Curve::eval(float t, int d, bool l)
+void Curve::handle(WorkData *data)
 {
+	PCurveEvalData *evalData = static_cast<PCurveEvalData*>(data);
+	eval(evalData->p, evalData->t, evalData->d, evalData->l);
+}
+
+void Curve::eval(GMlib::DVector< GMlib::Vector<float, 3> >& _p, float t, int d, bool l)
+{
+	this->_p = &_p;
 	this->ExecuteEventOnComponents(Events::Event("Eval", Events::EventValue(t), Events::EventValue(d), Events::EventValue(l)));
 }
 
@@ -51,7 +57,10 @@ void Curve::OnSizeChanged(const int &oldValue, const int &newValue)
 
 void Curve::OnResultSetDimChanged(const int &oldValue, const int &newValue)
 {
-	this->_p.setDim( newValue );
+	if(_p == NULL)
+		return;
+
+	(*_p).setDim( newValue );
 }
 
 void Curve::OnDerivationMethodChanged(const int &oldValue, const int &newValue)
@@ -64,9 +73,12 @@ void Curve::OnDerivationMethodChanged(const int &oldValue, const int &newValue)
 
 void Curve::OnResultSetChanged(const CL_Vec4f &oldValue, const CL_Vec4f &newValue)
 {
-	this->_p[(int)newValue.x][0] = newValue.y;
-	this->_p[(int)newValue.x][1] = newValue.z;
-	this->_p[(int)newValue.x][2] = newValue.w;
+	if(_p == NULL)
+		return;
+
+	(*_p)[(int)newValue.x][0] = newValue.y;
+	(*_p)[(int)newValue.x][1] = newValue.z;
+	(*_p)[(int)newValue.x][2] = newValue.w;
 }
 
 /////////////////////////////////////

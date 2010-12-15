@@ -1,0 +1,37 @@
+<Entity>
+  <Type>ERBSCurve</Type>
+  <Special>ERBS</Special>
+	<Components>
+    <Component>SpinEffect</Component>
+	</Components>
+	<Properties>
+    <Property>
+      <Name>Identity</Name>
+      <Value>ERBS</Value>
+    </Property>
+    <Property>
+      <Name>MultiThreadedReplot</Name>
+      <Value>0</Value>
+    </Property>
+    <Property>
+      <Name>ReplotValue</Name>
+      <Value>1000</Value>
+    </Property>
+    <Property>
+      <Name>ShowLocalCurves</Name>
+      <Value>0</Value>
+    </Property>
+    <Property>
+      <Name>ResultSetDim</Name>
+      <Value>2</Value>
+    </Property>
+    <Property>
+      <Name>DerivationMethod</Name>
+      <Value>0</Value>
+    </Property>
+    <Property>
+      <Name>Size</Name>
+      <Value>2</Value>
+    </Property>
+	</Properties>
+</Entity>

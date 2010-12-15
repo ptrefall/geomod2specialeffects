@@ -1,14 +1,14 @@
 #pragma once
 
 #include <Entity/IEntity.h>
-#include <GMlib/gmPCurve.h>
+#include <Parametric/PCurve.h>
 #include <GMlib/gmDMatrix.h>
 #include <GMlib/gmDVector.h>
 
 namespace Engine
 {
 	class CoreMgr;
-	class Curve : public IEntity, public GMlib::PCurve<float>
+	class Curve : public IEntity, public PCurve
 	{
 	public:
 		Curve(unsigned int id, const CL_String &type, const CL_String &name, CoreMgr *coreMgr, ComponentFactory &factory);
@@ -21,12 +21,16 @@ namespace Engine
 		virtual std::string getIdentity() const { return identity.Get().c_str(); }
 		virtual bool isClosed() const { return closed.Get(); }
 
+		virtual void handle(WorkData *data);
+
 	protected:
-		virtual void eval(float t, int d, bool l=true);
+		virtual void eval(GMlib::DVector< GMlib::Vector<float, 3> >& _p, float t, int d, bool l=true);
 		virtual float getStartP() { return param_start.Get(); }
 		virtual float getEndP() { return param_end.Get(); }
 
 	private:
+		GMlib::DVector< GMlib::Vector<float, 3> > *_p;
+
 		//Parametric curve properties
 		Property<CL_String> identity;
 		Property<bool> closed;

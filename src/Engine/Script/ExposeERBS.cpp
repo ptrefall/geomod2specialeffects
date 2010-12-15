@@ -106,16 +106,16 @@ void ExposeERBS::SetInputCurve(	LuaPlus::LuaObject lSelf, LuaPlus::LuaObject lCu
 
 	int curveId = lCurveId.ToInteger();
 	ExposeIEntity *exposedCurve = coreMgr->getScriptMgr()->getExposedEntityMgr()->getExposedEntity(curveId);
-	if(exposedCurve == NULL || !exposedCurve->isBezier())
+	if(exposedCurve == NULL || (!exposedCurve->isBezier() && !exposedCurve->isCurve()))
 	{
-		CL_String msg = cl_format("Entity was not a bezier type!");
+		CL_String msg = cl_format("Entity was not a bezier nor a curve type!");
 		throw CL_Exception(msg);
 	}
 
-	Bezier *inpCurve = dynamic_cast<Bezier*>(exposedCurve->getEntity());
+	PCurve *inpCurve = inpCurve = dynamic_cast<PCurve*>(exposedCurve->getEntity());
 	if(inpCurve == NULL)
 	{
-		CL_String msg = cl_format("Bezier was NULL, wrong type of Entity!");
+		CL_String msg = cl_format("InpCurve was NULL, wrong type of Entity!");
 		throw CL_Exception(msg);
 	}
 

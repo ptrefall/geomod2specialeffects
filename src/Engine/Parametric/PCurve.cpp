@@ -250,7 +250,7 @@ void PCurve::preSample( int /*m*/, int /*d*/, float /*s*/, float /*e*/ )
 ////////////////////////////////////
 void PCurve::replot( int m, int d ) 
 {
-	CL_Console::write_line("Start replotting PCurve");
+	//CL_Console::write_line("Start replotting PCurve");
 
 	// Correct sample domain
 	if( m < 2 )
@@ -296,7 +296,7 @@ void PCurve::finished(WorkDoneData *data)
 	PCurveEvalDoneData *evalData = static_cast<PCurveEvalDoneData*>(data);
 	postResampleWorkDone(evalData->m, evalData->d, evalData->start, evalData->end);
 	postReplot(evalData->m, evalData->d);
-	CL_Console::write_line("Finished replotting PCurve");
+	//CL_Console::write_line("Finished replotting PCurve");
 }
 
 void PCurve::removeVisualizer( GMlib::Visualizer* visualizer ) 

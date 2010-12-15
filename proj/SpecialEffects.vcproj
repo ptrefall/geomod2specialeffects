@@ -198,6 +198,14 @@
 						>
 					</File>
 					<File
+						RelativePath="..\resources\Scripts\Components\RoseEvaluator.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\resources\Scripts\Components\SpinEffect.lua"
+						>
+					</File>
+					<File
 						RelativePath="..\resources\Scripts\Components\SpiralEvaluator.lua"
 						>
 					</File>
@@ -235,6 +243,10 @@
 					</File>
 					<File
 						RelativePath="..\resources\XML\Entities\ERBSCurve.xml"
+						>
+					</File>
+					<File
+						RelativePath="..\resources\XML\Entities\RoseCurve.xml"
 						>
 					</File>
 					<File
