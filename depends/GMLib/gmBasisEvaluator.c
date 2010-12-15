@@ -52,7 +52,7 @@ namespace GMlib {
     t  = ( t - _tk ) / _dtk;
 
     // Find the local interval
-    _local   = std::min( int(t*_m), _m-1 );
+    _local   = min( int(t*_m), _m-1 );
 
     // Translate/Scale the local dt parameter
     _local_dt  = ( t - _local*_dt ) / _dt;

@@ -6,7 +6,7 @@
 using namespace Engine;
 
 PCurve::PCurve(CoreMgr *coreMgr, int s ) 
-: coreMgr(coreMgr), p(NULL)
+: coreMgr(coreMgr), p(NULL), multithreaded_replotting(false)
 {
 	_no_sam           = s;
 	_no_der           = 1;
@@ -318,32 +318,33 @@ void PCurve::genResampleWork(int m, int d, float start, float end)
 	float du = (end-start)/(m-1);
 	p->setDim(m);
 
-#if 1
-	//Generate jobs for worker threads here instead
-	//of calling eval directly in a linear fassion...
-	std::vector<WorkData*> work_group;
-	for( int i = 0; i < m - 1; i++ ) 
+	if(multithreaded_replotting)
 	{
-		PCurveEvalData *evalData = new PCurveEvalData(this, work_group.size(), (*p)[i], start + i * d, d, true);
+		//Generate jobs for worker threads here instead
+		//of calling eval directly in a linear fassion...
+		std::vector<WorkData*> work_group;
+		for( int i = 0; i < m - 1; i++ ) 
+		{
+			PCurveEvalData *evalData = new PCurveEvalData(this, work_group.size(), (*p)[i], start + i * d, d, true);
+			work_group.push_back(evalData);
+		}
+		PCurveEvalData *evalData = new PCurveEvalData(this, work_group.size(), (*p)[m-1], end, d, true);
 		work_group.push_back(evalData);
+
+		PCurveEvalDoneData *evalDoneData = new PCurveEvalDoneData(this, p, m,d, start,end);
+		coreMgr->getWorkThreadMgr()->addWorkGroup(this, work_group, evalDoneData);
 	}
-	PCurveEvalData *evalData = new PCurveEvalData(this, work_group.size(), (*p)[m-1], end, d, true);
-	work_group.push_back(evalData);
-
-	PCurveEvalDoneData *evalDoneData = new PCurveEvalDoneData(this, p, m,d, start,end);
-	coreMgr->getWorkThreadMgr()->addWorkGroup(this, work_group, evalDoneData);
-
-#endif
-#if 0
-	for( int i = 0; i < m - 1; i++ ) 
+	else
 	{
-		eval((*p)[i], start + i * du, d, true);
-	}
-	PCurveEvalDoneData *evalDoneData = new PCurveEvalDoneData(this, p, m,d, start,end);
-	eval((*p)[m-1], end, d, true );
+		for( int i = 0; i < m - 1; i++ ) 
+		{
+			eval((*p)[i], start + i * du, d, true);
+		}
+		PCurveEvalDoneData *evalDoneData = new PCurveEvalDoneData(this, p, m,d, start,end);
+		eval((*p)[m-1], end, d, true );
 
-	finished(evalDoneData);
-#endif
+		finished(evalDoneData);
+	}
 }
 
 void PCurve::postResampleWorkDone(int m, int d, float start, float end)

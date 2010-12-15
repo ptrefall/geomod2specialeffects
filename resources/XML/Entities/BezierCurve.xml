@@ -2,12 +2,15 @@
   <Type>BezierCurve</Type>
   <Special>Bezier</Special>
 	<Components>
-    <Component>BezierEvaluator</Component>
 	</Components>
 	<Properties>
     <Property>
       <Name>Identity</Name>
       <Value>Bezier</Value>
+    </Property>
+    <Property>
+      <Name>MultiThreadedReplot</Name>
+      <Value>0</Value>
     </Property>
     <Property>
       <Name>ResultSetDim</Name>

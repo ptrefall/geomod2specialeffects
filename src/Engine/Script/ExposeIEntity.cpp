@@ -5,11 +5,13 @@
 #include "ExposeComponentContainer.h"
 #include "ExposeCurve.h"
 #include "ExposeBezier.h"
+#include "ExposeERBS.h"
 #include "ScriptMgr.h"
 #include <Core/CoreMgr.h>
 #include <Entity/IEntity.h>
 #include <Entities/Curve.h>
 #include <Entities/Bezier.h>
+#include <Entities/ERBS.h>
 #include <Event/Event.h>
 #include <Event/EventValue.h>
 
@@ -17,7 +19,7 @@ using namespace Engine;
 using namespace LuaPlus;
 
 ExposeIEntity::ExposeIEntity(CoreMgr *coreMgr, ExposeEntityManager *exposedEntityMgr, IEntity *entity)
-: exposedPropContainer(NULL), exposedCompContainer(NULL), exposedCurve(NULL)
+: exposedPropContainer(NULL), exposedCompContainer(NULL), exposedCurve(NULL), exposedBezier(NULL), exposedERBS(NULL)
 {
 	this->coreMgr = coreMgr;
 	this->exposedEntityMgr = exposedEntityMgr;
@@ -79,6 +81,10 @@ void ExposeIEntity::init()
 	else if(entity->getSpecialType() == Bezier::GetStaticSpecialType())
 	{
 		exposedBezier = new ExposeBezier(coreMgr, lEntity, lMeta, dynamic_cast<Bezier*>(entity));
+	}
+	else if(entity->getSpecialType() == ERBS::GetStaticSpecialType())
+	{
+		exposedERBS = new ExposeERBS(coreMgr, lEntity, lMeta, dynamic_cast<ERBS*>(entity));
 	}
 }
 

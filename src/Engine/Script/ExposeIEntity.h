@@ -13,6 +13,7 @@ class ExposeComponentContainer;
 
 class ExposeCurve;
 class ExposeBezier;
+class ExposeERBS;
 
 class ExposeIEntity
 {
@@ -23,6 +24,10 @@ public:
 	IEntity *getEntity() const { return entity; }
 	LuaPlus::LuaObject getLEntity() const { return lEntity; }
 	LuaPlus::LuaObject getLMeta() const { return lMeta; }
+
+	bool isCurve() { return (exposedCurve != 0); }
+	bool isBezier() { return (exposedBezier != 0); }
+	bool isERBS() { return (exposedERBS != 0); }
 
 protected:
 	void init();
@@ -42,6 +47,7 @@ protected:
 
 	ExposeCurve *exposedCurve;
 	ExposeBezier *exposedBezier;
+	ExposeERBS *exposedERBS;
 };
 
 }

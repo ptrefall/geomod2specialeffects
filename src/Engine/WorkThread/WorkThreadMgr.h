@@ -37,7 +37,6 @@ namespace Engine
 
 		unsigned int active_cores;
 		std::vector<CL_Thread> worker_threads;
-		std::vector<CL_Mutex> worker_mutex;
 		std::vector<CL_Event> event_more_work;
 		CL_Event event_worker_done;
 		CL_Event event_stop;
