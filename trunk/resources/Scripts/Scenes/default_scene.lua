@@ -24,7 +24,12 @@ function Scene:Init()
 	bezier:SetControlPoint({x=-10.0, y=-10.0, z=0.0})
 	bezier:SetControlPoint({x=0.0, y=-10.0, z=0.0})
 	AddToScene(bezier)
-	bezier:Replot(10000)
+	bezier:Replot(100)
+	
+	local erbs = CreateEntity("ERBSCurve")
+	erbs:SetInputCurve(bezier, 20, 2, 100)
+	AddToScene(erbs)
+	erbs:Replot(100)
 	
 end
 

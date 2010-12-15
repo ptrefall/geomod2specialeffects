@@ -18,6 +18,7 @@ Bezier::Bezier(unsigned int id, const CL_String &type, const CL_String &name, Co
 	resultSet_dim = this->AddProperty<int>("ResultSetDim", 0);
 	derivation_method = this->AddProperty<int>("DerivationMethod", 0);
 	resultSet = this->AddProperty<CL_Vec4f>("ResultSet", CL_Vec4f(0.0f, 0.0f, 0.0f, 0.0f));
+	mtReplot = this->AddProperty<int>("MultiThreadedReplot", 0);
 
 	//Bezier properties
 	controlPoint = this->AddProperty<CL_Vec3f>("ControlPoint", CL_Vec3f(0.0f, 0.0f, 0.0f));
@@ -28,6 +29,7 @@ Bezier::Bezier(unsigned int id, const CL_String &type, const CL_String &name, Co
 	//Parametric curve property callbacks
 	slotSizeChanged = size.ValueChanged().connect(this, &Bezier::OnSizeChanged);
 	slotDerivationMethodChanged = derivation_method.ValueChanged().connect(this, &Bezier::OnDerivationMethodChanged);
+	slotMTReplotChanged = mtReplot.ValueChanged().connect(this, &Bezier::OnMTReplotChanged);
 	
 	//Bezier property callbacks
 	slotControlPointChanged = controlPoint.ValueChanged().connect(this, &Bezier::OnControlPointChanged);
@@ -40,13 +42,22 @@ Bezier::~Bezier()
 {
 }
 
+void Bezier::optionalInit(GMlib::DVector<GMlib::Vector<float,3>> pt, float t1, float t2, float t3)
+{
+	GMlib::DMatrix<float> bernHermMat;
+	calcBernHerm(bernHermMat, (t2-t1)/(t3-t1), pt.getDim()-1, 1.0f/(t3-t1));
+	bernHermMat.invert();
+
+	controlPoints = bernHermMat * pt;
+
+	for(int i = 0; i < controlPoints.getDim(); i++)
+		controlPoints[i] -= pt(0);
+	this->translate(pt(0));
+}
+
 void Bezier::handle(WorkData *data)
 {
 	PCurveEvalData *evalData = static_cast<PCurveEvalData*>(data);
-	if(evalData->index == 9998)
-	{
-		CL_Console::write_line("Bugs in MT!");
-	}
 	eval(evalData->p, evalData->t, evalData->d, evalData->l);
 }
 
@@ -137,6 +148,11 @@ void Bezier::OnDerivationMethodChanged(const int &oldValue, const int &newValue)
 		return;
 
 	this->_dm = (GMlib::GM_DERIVATION_METHOD)newValue;
+}
+
+void Bezier::OnMTReplotChanged(const int &oldValue, const int &newValue)
+{
+	this->setMultiThreadedReplotting((newValue > 0));
 }
 
 //////////////////////////////////

@@ -365,6 +365,14 @@
 					RelativePath="..\src\Engine\Entities\Curve.h"
 					>
 				</File>
+				<File
+					RelativePath="..\src\Engine\Entities\ERBS.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\Engine\Entities\ERBS.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Script"
@@ -426,6 +434,14 @@
 					</File>
 					<File
 						RelativePath="..\src\Engine\Script\ExposeEntityManager.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\Engine\Script\ExposeERBS.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\Engine\Script\ExposeERBS.h"
 						>
 					</File>
 					<File

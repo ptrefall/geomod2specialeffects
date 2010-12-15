@@ -9,6 +9,17 @@
 #include <WorkThread/WorkDoneData.h>
 #include <WorkThread/WorkProducer.h>
 
+#ifdef _MSC_VER
+	#include <intrin.h>
+	#ifndef compiler_barrier
+		#define compiler_barrier() _ReadWriteBarrier()
+	#endif
+#else
+	#ifndef compiler_barrier
+		#define compiler_barrier()  __asm__ __volatile__("" : : : "memory")
+	#endif
+#endif
+
 namespace Engine 
 {
 class CoreMgr;
@@ -22,12 +33,23 @@ public:
 	float t;
 	int d;
 	bool l;
-	volatile bool handled;
+	CL_InterlockedVariable handled;
 	PCurveEvalData(WorkProducer *producer, unsigned int index, GMlib::DVector< GMlib::Vector<float, 3> > &p, float t, int d, bool l)
-		: producer(producer), index(index), p(p), t(t), d(d), l(l), handled(false) {}
+		: producer(producer), index(index), p(p), t(t), d(d), l(l) { compiler_barrier(); handled.set(0); }
 
-	virtual void handle() { handled = true; producer->handle(this); }
-	virtual bool isHandled() { return handled; }
+	virtual void handle() 
+	{ 
+		{ 
+			compiler_barrier(); 
+			handled.increment(); 
+		} 
+		if(handled.get() == 1)
+		{ 
+			producer->handle(this); 
+		}
+	}
+
+	virtual bool isHandled() { compiler_barrier(); return (handled.get() > 0); }
 };
 
 class PCurveEvalDoneData : public WorkDoneData
@@ -50,6 +72,8 @@ class PCurve : public GMlib::Parametrics<float,1>, public WorkProducer
 public:
 	PCurve(CoreMgr *coreMgr, int s = 20 );
 	~PCurve();
+
+	void setMultiThreadedReplotting(bool mt) { multithreaded_replotting = mt; }
 
 	void enableDefaultVisualizer( bool enable = true );
 	GMlib::DVector<GMlib::Vector<float,3>> evaluate( float t, int d );
@@ -112,6 +136,8 @@ protected:
 	GMlib::PCurveVisualizer<float> *_default_visualizer;
 
 	GMlib::DVector< GMlib::DVector< GMlib::Vector<float, 3> > > *p;
+
+	bool multithreaded_replotting;
 
 	int _no_sam;      // Number of samples for single sampling
 	int _no_der;      // Number of derivatives
