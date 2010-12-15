@@ -53,6 +53,7 @@ namespace Engine
 
 		//SceneObject properties
 		Property<CL_Vec3f> position;
+		Property<CL_Vec4f> rotation;
 
 		CL_Slot slotSizeChanged;
 		void OnSizeChanged(const int &oldValue, const int &newValue);
@@ -65,6 +66,9 @@ namespace Engine
 
 		CL_Slot slotPositionChanged;
 		void OnPositionChanged(const CL_Vec3f &oldValue, const CL_Vec3f &newValue);
+
+		CL_Slot slotRotationChanged;
+		void OnRotationChanged(const CL_Vec4f &oldValue, const CL_Vec4f &newValue);
 
 		CL_Slot slotMTReplotChanged;
 		void OnMTReplotChanged(const int &oldValue, const int &newValue);

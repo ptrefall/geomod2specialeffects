@@ -2,7 +2,7 @@
   <Type>ERBSCurve</Type>
   <Special>ERBS</Special>
 	<Components>
-    <Component>SpinEffect</Component>
+    <Component>SpinChildEffect</Component>
 	</Components>
 	<Properties>
     <Property>
@@ -19,7 +19,7 @@
     </Property>
     <Property>
       <Name>ShowLocalCurves</Name>
-      <Value>0</Value>
+      <Value>1</Value>
     </Property>
     <Property>
       <Name>ResultSetDim</Name>

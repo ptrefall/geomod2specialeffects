@@ -19,6 +19,8 @@ protected:
 	void Replot(LuaPlus::LuaObject lSelf, LuaPlus::LuaObject lM, LuaPlus::LuaObject lD);
 	void SetInputCurve(	LuaPlus::LuaObject lSelf, LuaPlus::LuaObject lCurve, LuaPlus::LuaObject lNumLocalCurves, 
 						LuaPlus::LuaObject lDeg, LuaPlus::LuaObject lLocalCurveReplotNum);
+	LuaPlus::LuaObject GetNumLocalCurves(LuaPlus::LuaObject lSelf);
+	LuaPlus::LuaObject GetLocalCurve(LuaPlus::LuaObject lSelf, LuaPlus::LuaObject lCurveIndex);
 
 	CoreMgr *coreMgr;
 

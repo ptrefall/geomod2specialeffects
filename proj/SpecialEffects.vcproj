@@ -202,6 +202,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\resources\Scripts\Components\SpinChildEffect.lua"
+						>
+					</File>
+					<File
 						RelativePath="..\resources\Scripts\Components\SpinEffect.lua"
 						>
 					</File>

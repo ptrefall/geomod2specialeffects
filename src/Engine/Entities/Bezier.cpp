@@ -25,6 +25,7 @@ Bezier::Bezier(unsigned int id, const CL_String &type, const CL_String &name, Co
 
 	//SceneObject properties
 	position = this->AddProperty<CL_Vec3f>("Position", CL_Vec3f(0.0f, 0.0f, 0.0f));
+	rotation = this->AddProperty<CL_Vec4f>("Rotation", CL_Vec4f(0.0f, 0.0f, 0.0f, 0.0f));
 
 	//Parametric curve property callbacks
 	slotSizeChanged = size.ValueChanged().connect(this, &Bezier::OnSizeChanged);
@@ -36,6 +37,7 @@ Bezier::Bezier(unsigned int id, const CL_String &type, const CL_String &name, Co
 
 	//SceneObject property callbacks
 	slotPositionChanged = position.ValueChanged().connect(this, &Bezier::OnPositionChanged);
+	slotRotationChanged = rotation.ValueChanged().connect(this, &Bezier::OnRotationChanged);
 }
 
 Bezier::~Bezier()
@@ -173,4 +175,9 @@ void Bezier::OnPositionChanged(const CL_Vec3f &oldValue, const CL_Vec3f &newValu
 	translation[1] = newValue.y - oldValue.y;
 	translation[2] = newValue.z - oldValue.z;
 	this->translate(translation);
+}
+
+void Bezier::OnRotationChanged(const CL_Vec4f &oldValue, const CL_Vec4f &newValue)
+{
+	this->rotate(GMlib::Angle(newValue.x), GMlib::Vector3D<float>(newValue.y, newValue.z, newValue.w));
 }
