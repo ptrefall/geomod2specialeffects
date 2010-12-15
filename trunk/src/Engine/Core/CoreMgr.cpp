@@ -127,6 +127,11 @@ void CoreMgr::run()
 		}
 		workThreadMgr->update(1.0f);
 
+		static float lastTime = 0.0f;
+		float elapsedTime = scene->getElapsedTime();
+		entityMgr->update(elapsedTime-lastTime);
+		lastTime = elapsedTime;
+
 		scene->display();
 		guiMgr->swapBuffers();
 	}

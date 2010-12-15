@@ -1,0 +1,25 @@
+<Entity>
+  <Type>RoseCurve</Type>
+  <Special>Curve</Special>
+	<Components>
+    <Component>RoseEvaluator</Component>
+	</Components>
+	<Properties>
+    <Property>
+      <Name>Identity</Name>
+      <Value>Rose</Value>
+    </Property>
+    <Property>
+      <Name>ResultSetDim</Name>
+      <Value>2</Value>
+    </Property>
+    <Property>
+      <Name>DerivationMethod</Name>
+      <Value>0</Value>
+    </Property>
+    <Property>
+      <Name>ParamEnd</Name>
+      <Value>25.132741</Value>
+    </Property>
+	</Properties>
+</Entity>

@@ -26,9 +26,12 @@ ERBS::ERBS(unsigned int id, const CL_String &type, const CL_String &name, CoreMg
 
 	//ERBS properties
 	knotInit = this->AddProperty<CL_Vec2f>("KnotInit", CL_Vec2f(0.0f, 0.0f));
+	showLocalCurves = this->AddProperty<bool>("ShowLocalCurves", false);
+	replotValue = this->AddProperty<int>("ReplotValue", 1000);
 
 	//SceneObject properties
 	position = this->AddProperty<CL_Vec3f>("Position", CL_Vec3f(0.0f, 0.0f, 0.0f));
+	rotation = this->AddProperty<CL_Vec4f>("Rotation", CL_Vec4f(0.0f, 0.0f, 0.0f, 0.0f));
 
 	//Parametric curve property callbacks
 	slotSizeChanged = size.ValueChanged().connect(this, &ERBS::OnSizeChanged);
@@ -37,9 +40,11 @@ ERBS::ERBS(unsigned int id, const CL_String &type, const CL_String &name, CoreMg
 	
 	//ERBS property callbacks
 	slotKnotInitChanged = knotInit.ValueChanged().connect(this, &ERBS::OnKnotInitChanged);
+	slotShowLocalCurvesChanged = showLocalCurves.ValueChanged().connect(this, &ERBS::OnShowLocalCurvesChanged);
 
 	//SceneObject property callbacks
 	slotPositionChanged = position.ValueChanged().connect(this, &ERBS::OnPositionChanged);
+	slotRotationChanged = rotation.ValueChanged().connect(this, &ERBS::OnRotationChanged);
 }
 
 ERBS::~ERBS()
@@ -76,9 +81,11 @@ void ERBS::setInputCurve(PCurve *inpCurve, int numLocalCurves, int deg, int loca
 	{
 		Bezier *localCurve = static_cast<Bezier*>(IEntity::coreMgr->getEntityMgr()->create("BezierCurve"));
 		localCurve->optionalInit(inpCurve->evaluateParent(knots[i], deg), knots[i-1], knots[i], knots[i+1]);
-		localCurves[i-1] = localCurve;
 		localCurve->setColor( GMlib::GMcolor::Blue );
-		localCurve->replot(localCurveReplotNum);  
+		localCurve->replot(localCurveReplotNum);
+		if(showLocalCurves.Get())
+			this->insert(localCurve);
+		localCurves[i-1] = localCurve;
 	}
 
 	if(closed.Get())
@@ -88,9 +95,14 @@ void ERBS::setInputCurve(PCurve *inpCurve, int numLocalCurves, int deg, int loca
 		Bezier *localCurve = static_cast<Bezier*>(IEntity::coreMgr->getEntityMgr()->create("BezierCurve"));
 		localCurve->optionalInit(inpCurve->evaluateParent(knots[numLocalCurves], deg), knots[numLocalCurves-1], knots[numLocalCurves], knots[numLocalCurves+1]);
 		localCurve->setColor( GMlib::GMcolor::Blue );
-		localCurve->replot(localCurveReplotNum); 
+		localCurve->replot(localCurveReplotNum);
+		if(showLocalCurves.Get())
+			this->insert(localCurve);
 		localCurves[numLocalCurves-1] = localCurve;
 	}
+
+	param_start = knots[1];
+	param_end = knots[knots.getDim()-2];
 }
 
 void ERBS::handle(WorkData *data)
@@ -107,6 +119,9 @@ void ERBS::eval(GMlib::DVector< GMlib::Vector<float, 3> >& _p, float t, int d, b
 		if( t < knots[idx+1] )
 			break;
 	}
+
+	if(idx-1 > localCurves.getDim())
+		return;
 
 	GMlib::DVector<GMlib::Vector<float,3>> c0 = localCurves[idx-1]->evaluateParent((t-knots[idx-1]) / (knots[idx+1] - knots[idx-1]), d);
 
@@ -204,6 +219,11 @@ void ERBS::OnKnotInitChanged(const CL_Vec2f &oldValue, const CL_Vec2f &newValue)
 	param_end = knots[knots.getDim()-2];
 }
 
+void ERBS::OnShowLocalCurvesChanged(const bool &oldValue, const bool &newValue)
+{
+	
+}
+
 /////////////////////////////////////
 // SCENE OBJECT PROPERTY CALLBACKS
 /////////////////////////////////////
@@ -214,4 +234,9 @@ void ERBS::OnPositionChanged(const CL_Vec3f &oldValue, const CL_Vec3f &newValue)
 	translation[1] = newValue.y - oldValue.y;
 	translation[2] = newValue.z - oldValue.z;
 	this->translate(translation);
+}
+
+void ERBS::OnRotationChanged(const CL_Vec4f &oldValue, const CL_Vec4f &newValue)
+{
+	this->rotate(GMlib::Angle(newValue.x), GMlib::Vector3D<float>(newValue.y, newValue.z, newValue.w));
 }
