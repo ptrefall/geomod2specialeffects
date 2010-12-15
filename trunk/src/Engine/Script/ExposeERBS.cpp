@@ -27,6 +27,8 @@ void ExposeERBS::init()
 {
 	lMeta.RegisterDirect("Replot", *this, &ExposeERBS::Replot);
 	lMeta.RegisterDirect("SetInputCurve", *this, &ExposeERBS::SetInputCurve);
+	lMeta.RegisterDirect("GetNumLocalCurves", *this, &ExposeERBS::GetNumLocalCurves);
+	lMeta.RegisterDirect("GetLocalCurve", *this, &ExposeERBS::GetLocalCurve);
 }
 
 void ExposeERBS::Replot(LuaObject lSelf, LuaPlus::LuaObject lM, LuaPlus::LuaObject lD)
@@ -138,4 +140,37 @@ void ExposeERBS::SetInputCurve(	LuaPlus::LuaObject lSelf, LuaPlus::LuaObject lCu
 		localCurveReplotNum = (int)lLocalCurveReplotNum.GetFloat();
 
 	curve->setInputCurve(inpCurve, numLocalCurves, deg, localCurveReplotNum);
+}
+
+LuaPlus::LuaObject ExposeERBS::GetNumLocalCurves(LuaPlus::LuaObject lSelf)
+{
+	if(!lSelf.IsTable())
+	{
+		CL_String msg = cl_format("Self was not a table (it's a %1)", lSelf.TypeName());
+		throw CL_Exception(msg);
+	}
+
+	int count = curve->getNumLocalCurves();
+	LuaObject lCount;
+	lCount.AssignInteger(coreMgr->getScriptMgr()->GetGlobalState()->Get(), count);
+	return lCount;
+}
+
+LuaPlus::LuaObject ExposeERBS::GetLocalCurve(LuaPlus::LuaObject lSelf, LuaPlus::LuaObject lCurveIndex)
+{
+	if(!lSelf.IsTable())
+	{
+		CL_String msg = cl_format("Self was not a table (it's a %1)", lSelf.TypeName());
+		throw CL_Exception(msg);
+	}
+
+	if(!lCurveIndex.IsInteger())
+	{
+		CL_String msg = cl_format("CurveIndex was not an integer, (it's a %1)", lCurveIndex.TypeName());
+		throw CL_Exception(msg);
+	}
+
+	Bezier *child = curve->getLocalCurve(lCurveIndex.ToInteger());
+	LuaObject lChild = coreMgr->getScriptMgr()->getExposedEntityMgr()->getLEntity(child->getId());
+	return lChild;
 }

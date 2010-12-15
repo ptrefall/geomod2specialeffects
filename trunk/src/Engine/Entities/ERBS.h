@@ -27,6 +27,9 @@ namespace Engine
 
 		void setInputCurve(PCurve *inpCurve, int numLocalCurves, int deg, int localCurveReplotNum);
 
+		int getNumLocalCurves() const { return localCurves.getDim(); }
+		Bezier *getLocalCurve(int index) { return localCurves[index]; }
+
 	protected:
 		virtual void eval(GMlib::DVector< GMlib::Vector<float, 3> >& _p, float t, int d, bool l=true);
 		virtual float getStartP() { return param_start.Get(); }

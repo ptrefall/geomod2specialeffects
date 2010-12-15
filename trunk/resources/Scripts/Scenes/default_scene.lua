@@ -29,7 +29,7 @@ function Scene:Init()
 	--bezier:Replot(100)
 	
 	local erbs = CreateEntity("ERBSCurve")
-	erbs:SetInputCurve(rose, 56, 2, 100)
+	erbs:SetInputCurve(rose, 56, 2, 20)
 	AddToScene(erbs)
 	erbs:Replot(erbs:GetReplotValue())
 	
