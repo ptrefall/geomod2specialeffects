@@ -1,0 +1,1 @@
+Special Effects using parametrics lib in GMlib/OpenGL. Quite the sophisticated framework has been built around this, using component-based entities, properties, lua scripting and XML loading.
